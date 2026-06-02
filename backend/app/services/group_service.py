@@ -5,6 +5,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
 
+from app.models.group_prize import GroupPrize
 from app.models.prode_group import GroupMember, GroupMemberRole, ProdeGroup
 from app.models.user import User
 from app.schemas.prode_group import ProdeGroupCreate, ProdeGroupUpdate
@@ -34,6 +35,7 @@ def get_group_by_id(db: Session, group_id: int) -> ProdeGroup | None:
         select(ProdeGroup)
         .options(
             selectinload(ProdeGroup.members).selectinload(GroupMember.user),
+            selectinload(ProdeGroup.prizes),
         )
         .where(ProdeGroup.id == group_id)
     )
@@ -270,3 +272,73 @@ def ensure_personal_group_for_user(db: Session, user: User) -> ProdeGroup:
     db.refresh(group)
 
     return group
+
+def get_group_prize_by_id(db: Session, prize_id: int) -> GroupPrize | None:
+    return db.get(GroupPrize, prize_id)
+
+
+def list_group_prizes(db: Session, group_id: int) -> list[GroupPrize]:
+    stmt = (
+        select(GroupPrize)
+        .where(GroupPrize.group_id == group_id)
+        .order_by(GroupPrize.position_order.asc(), GroupPrize.id.asc())
+    )
+
+    return list(db.execute(stmt).scalars().all())
+
+
+def create_group_prize(
+    db: Session,
+    group: ProdeGroup,
+    title: str,
+    description: str | None,
+    amount_label: str | None,
+    position_order: int,
+    current_user: User,
+) -> GroupPrize:
+    prize = GroupPrize(
+        group_id=group.id,
+        title=title.strip(),
+        description=description.strip() if description else None,
+        amount_label=amount_label.strip() if amount_label else None,
+        position_order=position_order,
+        created_by_user_id=current_user.id,
+    )
+
+    db.add(prize)
+    db.commit()
+    db.refresh(prize)
+
+    return prize
+
+
+def update_group_prize(
+    db: Session,
+    prize: GroupPrize,
+    title: str | None = None,
+    description: str | None = None,
+    amount_label: str | None = None,
+    position_order: int | None = None,
+) -> GroupPrize:
+    if title is not None:
+        prize.title = title.strip()
+
+    if description is not None:
+        prize.description = description.strip() if description else None
+
+    if amount_label is not None:
+        prize.amount_label = amount_label.strip() if amount_label else None
+
+    if position_order is not None:
+        prize.position_order = position_order
+
+    db.add(prize)
+    db.commit()
+    db.refresh(prize)
+
+    return prize
+
+
+def delete_group_prize(db: Session, prize: GroupPrize) -> None:
+    db.delete(prize)
+    db.commit()

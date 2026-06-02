@@ -6,11 +6,13 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getMe, hasToken, login, logout, register } from "../api/auth";
+import { getMe, hasToken, login, logout, register, verifyEmail } from "../api/auth";
 import type {
   LoginPayload,
   RegisterPayload,
+  RegisterResponse,
   User,
+  VerifyEmailPayload,
 } from "../types/auth";
 
 interface AuthContextValue {
@@ -18,7 +20,8 @@ interface AuthContextValue {
   isLoading: boolean;
   isAuthenticated: boolean;
   loginUser: (payload: LoginPayload) => Promise<User>;
-  registerUser: (payload: RegisterPayload) => Promise<User>;
+  registerUser: (payload: RegisterPayload) => Promise<RegisterResponse>;
+  verifyEmailUser: (payload: VerifyEmailPayload) => Promise<User>;
   logoutUser: () => void;
 }
 
@@ -35,7 +38,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function registerUser(payload: RegisterPayload) {
-    const response = await register(payload);
+    return register(payload);
+  }
+
+  async function verifyEmailUser(payload: VerifyEmailPayload) {
+    const response = await verifyEmail(payload);
     setUser(response.user);
     return response.user;
   }
@@ -73,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAuthenticated: Boolean(user),
       loginUser,
       registerUser,
+      verifyEmailUser,
       logoutUser,
     }),
     [user, isLoading],

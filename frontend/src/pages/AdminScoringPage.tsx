@@ -66,25 +66,25 @@ export function AdminScoringPage() {
   return (
     <div>
       <div className="mb-8">
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-yellow-300">
+        <p className="text-sm font-black uppercase tracking-[0.2em] text-red-100">
           Administración
         </p>
 
         <h1 className="mt-2 text-4xl font-black">Reglas de puntaje</h1>
 
-        <p className="mt-2 text-slate-400">
+        <p className="mt-2 text-slate-300">
           Configurá cómo se calculan los puntos del Prode.
         </p>
       </div>
 
       {errorMessage && (
-        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200">
+        <div className="mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100">
           {errorMessage}
         </div>
       )}
 
       {successMessage && (
-        <div className="mb-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 font-semibold text-emerald-200">
+        <div className="mb-6 rounded-2xl border border-mundial-green/30 bg-mundial-green/10 px-4 py-3 font-semibold text-mundial-greenSoft">
           {successMessage}
         </div>
       )}
@@ -98,7 +98,7 @@ export function AdminScoringPage() {
 
           <div className="space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 Torneo
               </label>
 
@@ -110,7 +110,7 @@ export function AdminScoringPage() {
                     tournament_id: event.target.value,
                   }))
                 }
-                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-yellow-400"
+                className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-red"
               >
                 <option value="">Regla general</option>
                 {tournaments.map((tournament) => (
@@ -122,7 +122,7 @@ export function AdminScoringPage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 Nombre
               </label>
 
@@ -131,14 +131,14 @@ export function AdminScoringPage() {
                 onChange={(event) =>
                   setForm((current) => ({ ...current, name: event.target.value }))
                 }
-                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-yellow-400"
+                className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-red"
                 required
               />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-300">
+                <label className="mb-2 block text-sm font-bold text-slate-200">
                   Exacto
                 </label>
                 <input
@@ -151,12 +151,12 @@ export function AdminScoringPage() {
                       exact_score_points: Number(event.target.value),
                     }))
                   }
-                  className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-yellow-400"
+                  className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-red"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-300">
+                <label className="mb-2 block text-sm font-bold text-slate-200">
                   Ganador / empate
                 </label>
                 <input
@@ -169,12 +169,12 @@ export function AdminScoringPage() {
                       winner_points: Number(event.target.value),
                     }))
                   }
-                  className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-yellow-400"
+                  className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-red"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-300">
+                <label className="mb-2 block text-sm font-bold text-slate-200">
                   Diferencia gol
                 </label>
                 <input
@@ -187,12 +187,12 @@ export function AdminScoringPage() {
                       goal_difference_points: Number(event.target.value),
                     }))
                   }
-                  className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-yellow-400"
+                  className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-red"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-300">
+                <label className="mb-2 block text-sm font-bold text-slate-200">
                   Participación
                 </label>
                 <input
@@ -205,12 +205,12 @@ export function AdminScoringPage() {
                       participation_points: Number(event.target.value),
                     }))
                   }
-                  className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-yellow-400"
+                  className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-red"
                 />
               </div>
             </div>
 
-            <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950 px-4 py-3">
+            <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3">
               <input
                 type="checkbox"
                 checked={form.is_default}
@@ -221,12 +221,12 @@ export function AdminScoringPage() {
                   }))
                 }
               />
-              <span className="text-sm font-bold text-slate-300">
+              <span className="text-sm font-bold text-slate-200">
                 Usar como regla predeterminada
               </span>
             </label>
 
-            <button className="w-full rounded-2xl bg-yellow-400 px-5 py-3 font-black text-slate-950 hover:bg-yellow-300">
+            <button className="w-full rounded-2xl bg-mundial-red px-5 py-3 font-black text-mundial-dark hover:bg-mundial-redLight">
               Crear regla
             </button>
           </div>
@@ -239,13 +239,13 @@ export function AdminScoringPage() {
             {rules.map((rule) => (
               <div
                 key={rule.id}
-                className="rounded-2xl border border-white/10 bg-slate-950/60 p-4"
+                className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-4"
               >
                 <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
                   <div>
                     <p className="text-xl font-black">{rule.name}</p>
 
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="mt-1 text-sm text-slate-300">
                       {rule.tournament_id
                         ? `Torneo ID: ${rule.tournament_id}`
                         : "Regla general"}
@@ -254,13 +254,13 @@ export function AdminScoringPage() {
 
                   <div className="flex flex-wrap gap-2">
                     {rule.is_default && (
-                      <span className="rounded-full bg-yellow-400/10 px-3 py-1 text-xs font-black text-yellow-300">
+                      <span className="rounded-full bg-mundial-red/10 px-3 py-1 text-xs font-black text-red-100">
                         Default
                       </span>
                     )}
 
                     {rule.is_active && (
-                      <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-black text-emerald-300">
+                      <span className="rounded-full bg-mundial-green/10 px-3 py-1 text-xs font-black text-mundial-greenSoft">
                         Activa
                       </span>
                     )}
@@ -269,28 +269,28 @@ export function AdminScoringPage() {
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-4">
                   <div className="rounded-xl bg-white/5 p-3">
-                    <p className="text-xs text-slate-500">Exacto</p>
-                    <p className="text-2xl font-black text-yellow-300">
+                    <p className="text-xs text-slate-400">Exacto</p>
+                    <p className="text-2xl font-black text-red-100">
                       {rule.exact_score_points}
                     </p>
                   </div>
 
                   <div className="rounded-xl bg-white/5 p-3">
-                    <p className="text-xs text-slate-500">Ganador</p>
-                    <p className="text-2xl font-black text-emerald-300">
+                    <p className="text-xs text-slate-400">Ganador</p>
+                    <p className="text-2xl font-black text-mundial-greenSoft">
                       {rule.winner_points}
                     </p>
                   </div>
 
                   <div className="rounded-xl bg-white/5 p-3">
-                    <p className="text-xs text-slate-500">Diferencia</p>
-                    <p className="text-2xl font-black text-emerald-300">
+                    <p className="text-xs text-slate-400">Diferencia</p>
+                    <p className="text-2xl font-black text-mundial-greenSoft">
                       {rule.goal_difference_points}
                     </p>
                   </div>
 
                   <div className="rounded-xl bg-white/5 p-3">
-                    <p className="text-xs text-slate-500">Participación</p>
+                    <p className="text-xs text-slate-400">Participación</p>
                     <p className="text-2xl font-black">
                       {rule.participation_points}
                     </p>
@@ -300,7 +300,7 @@ export function AdminScoringPage() {
             ))}
 
             {rules.length === 0 && (
-              <p className="text-slate-400">
+              <p className="text-slate-300">
                 No hay reglas cargadas. Creá una regla estándar.
               </p>
             )}

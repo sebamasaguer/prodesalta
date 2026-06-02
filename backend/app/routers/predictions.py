@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 
 from app.core.deps import CurrentUser, DbSession
 from app.schemas.prediction import (
+    GroupPredictionRead,
     MatchPredictionStatus,
     PredictionCreate,
     PredictionRead,
@@ -16,6 +17,7 @@ from app.services.prediction_service import (
     get_match_lock_reason,
     get_prediction_by_id,
     get_prediction_for_user_match_group,
+    list_group_predictions,
     list_user_predictions,
     lock_expired_predictions,
     update_prediction,
@@ -110,6 +112,15 @@ def group_matches_with_predictions(
         )
 
     return items
+
+
+@router.get("/group/{group_id}/all", response_model=list[GroupPredictionRead])
+def group_all_predictions(
+    group_id: int,
+    db: DbSession,
+    current_user: CurrentUser,
+):
+    return list_group_predictions(db, group_id, current_user)
 
 
 @router.post("/lock-expired")

@@ -20,39 +20,39 @@ export function GroupCard({ group }: GroupCardProps) {
             <h3 className="text-2xl font-black">{group.name}</h3>
 
             {group.my_role === "OWNER" && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-yellow-400/10 px-3 py-1 text-xs font-black text-yellow-300">
+              <span className="inline-flex items-center gap-1 rounded-full bg-mundial-red/10 px-3 py-1 text-xs font-black text-red-100">
                 <Crown size={14} />
                 Dueño
               </span>
             )}
           </div>
 
-          <p className="line-clamp-2 text-sm leading-6 text-slate-400">
+          <p className="line-clamp-2 text-sm leading-6 text-slate-300">
             {group.description || "Grupo de Prode Mundial sin descripción."}
           </p>
         </div>
       </div>
 
       <div className="mb-5 grid grid-cols-2 gap-3">
-        <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+        <div className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-4">
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
             Participantes
           </p>
 
           <div className="mt-2 flex items-center gap-2">
-            <Users className="text-emerald-300" size={20} />
+            <Users className="text-mundial-greenSoft" size={20} />
             <p className="text-2xl font-black">{group.members_count}</p>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+        <div className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-4">
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
             Código
           </p>
 
           <button
             onClick={copyInviteCode}
-            className="mt-2 flex items-center gap-2 text-left text-xl font-black text-yellow-300 hover:text-yellow-200"
+            className="mt-2 flex items-center gap-2 text-left text-xl font-black text-red-100 hover:text-red-50"
           >
             {group.invite_code}
             <Copy size={16} />
@@ -62,7 +62,7 @@ export function GroupCard({ group }: GroupCardProps) {
 
       <Link
         to={`/grupos/${group.id}`}
-        className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-400 px-4 py-3 font-black text-slate-950 hover:bg-emerald-300"
+        className="inline-flex w-full items-center justify-center rounded-2xl bg-mundial-green px-4 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight"
       >
         Ver grupo
       </Link>

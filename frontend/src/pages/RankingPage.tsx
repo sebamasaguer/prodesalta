@@ -73,7 +73,7 @@ export function RankingPage() {
     <div>
       <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-yellow-300">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-red-100">
             Ranking
           </p>
 
@@ -81,7 +81,7 @@ export function RankingPage() {
             Ranking por grupo
           </h1>
 
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-slate-300">
             Posiciones calculadas automáticamente con los puntos de cada
             predicción.
           </p>
@@ -100,18 +100,18 @@ export function RankingPage() {
       </div>
 
       {errorMessage && (
-        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200">
+        <div className="mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100">
           {errorMessage}
         </div>
       )}
 
       {isLoadingSummaries ? (
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-300">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-200">
           Cargando rankings...
         </div>
       ) : summaries.length === 0 ? (
         <div className="rounded-3xl border border-white/10 bg-white/5 p-10 text-center">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-yellow-400/10 text-yellow-300">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-mundial-red/10 text-red-100">
             <Users size={34} />
           </div>
 
@@ -119,14 +119,14 @@ export function RankingPage() {
             Todavía no pertenecés a ningún grupo
           </h2>
 
-          <p className="mx-auto mt-3 max-w-xl text-slate-400">
+          <p className="mx-auto mt-3 max-w-xl text-slate-300">
             Para ver rankings, primero creá un grupo o unite a uno existente.
           </p>
 
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               to="/grupos/nuevo"
-              className="rounded-2xl bg-emerald-400 px-5 py-3 font-black text-slate-950 hover:bg-emerald-300"
+              className="rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight"
             >
               Crear grupo
             </Link>
@@ -142,14 +142,14 @@ export function RankingPage() {
       ) : (
         <>
           <div className="mb-6 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Grupo
             </label>
 
             <select
               value={selectedGroupId || ""}
               onChange={(event) => setSelectedGroupId(Number(event.target.value))}
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-yellow-400 md:max-w-md"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-red md:max-w-md"
             >
               {summaries.map((summary) => (
                 <option key={summary.group.id} value={summary.group.id}>
@@ -162,8 +162,8 @@ export function RankingPage() {
           {selectedSummary && (
             <div className="mb-6 grid gap-4 md:grid-cols-4">
               <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <Trophy className="mb-4 text-yellow-300" size={30} />
-                <p className="text-sm text-slate-400">Mi posición</p>
+                <Trophy className="mb-4 text-red-100" size={30} />
+                <p className="text-sm text-slate-300">Mi posición</p>
                 <p className="mt-2 text-4xl font-black">
                   {selectedSummary.my_position
                     ? `#${selectedSummary.my_position}`
@@ -172,25 +172,25 @@ export function RankingPage() {
               </div>
 
               <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <p className="text-sm text-slate-400">Mis puntos</p>
-                <p className="mt-2 text-4xl font-black text-yellow-300">
+                <p className="text-sm text-slate-300">Mis puntos</p>
+                <p className="mt-2 text-4xl font-black text-red-100">
                   {selectedSummary.my_points}
                 </p>
               </div>
 
               <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <p className="text-sm text-slate-400">Participantes</p>
+                <p className="text-sm text-slate-300">Participantes</p>
                 <p className="mt-2 text-4xl font-black">
                   {selectedSummary.participants_count}
                 </p>
               </div>
 
               <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <p className="text-sm text-slate-400">Líder</p>
+                <p className="text-sm text-slate-300">Líder</p>
                 <p className="mt-2 text-2xl font-black">
                   {selectedSummary.leader_name || "-"}
                 </p>
-                <p className="mt-1 text-sm font-bold text-yellow-300">
+                <p className="mt-1 text-sm font-bold text-red-100">
                   {selectedSummary.leader_points ?? 0} pts
                 </p>
               </div>
@@ -198,7 +198,7 @@ export function RankingPage() {
           )}
 
           {isLoadingRanking ? (
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-300">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-200">
               Cargando ranking del grupo...
             </div>
           ) : (

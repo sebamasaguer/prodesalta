@@ -9,6 +9,7 @@ export interface User {
   role: UserRole;
   is_active: boolean;
   created_at: string;
+  email_verified_at: string | null;
   terms_accepted_at: string | null;
   terms_version: string | null;
 }
@@ -25,6 +26,17 @@ export interface RegisterPayload {
   last_name: string;
   password: string;
   accept_terms: boolean;
+}
+
+export interface RegisterResponse {
+  message: string;
+  email: string;
+  email_delivery_mode: string;
+  dev_verification_url?: string | null;
+}
+
+export interface VerifyEmailPayload {
+  token: string;
 }
 
 export interface AuthResponse {

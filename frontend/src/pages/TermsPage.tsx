@@ -3,11 +3,11 @@ import { ArrowLeft, FileText } from "lucide-react";
 
 export function TermsPage() {
   return (
-    <div className="min-h-screen bg-slate-950 px-4 py-10 text-white">
+    <div className="min-h-screen bg-mundial-dark px-4 py-10 text-white">
       <div className="mx-auto max-w-4xl">
         <Link
           to="/"
-          className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-white"
+          className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-slate-300 hover:text-white"
         >
           <ArrowLeft size={18} />
           Volver al inicio
@@ -15,24 +15,24 @@ export function TermsPage() {
 
         <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl md:p-10">
           <div className="mb-8 flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-400 text-slate-950">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-mundial-green text-mundial-dark">
               <FileText size={30} />
             </div>
 
             <div>
-              <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+              <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
                 Legal
               </p>
               <h1 className="text-3xl font-black">
                 Términos y Condiciones de Uso
               </h1>
-              <p className="mt-1 text-sm text-slate-400">
+              <p className="mt-1 text-sm text-slate-300">
                 Última actualización: 2026
               </p>
             </div>
           </div>
 
-          <div className="space-y-6 text-sm leading-7 text-slate-300">
+          <div className="space-y-6 text-sm leading-7 text-slate-200">
             <section>
               <h2 className="mb-2 text-xl font-black text-white">
                 1. Objeto de la plataforma
@@ -148,7 +148,7 @@ export function TermsPage() {
             </section>
           </div>
 
-          <div className="mt-8 rounded-2xl border border-yellow-400/20 bg-yellow-400/10 p-4 text-sm font-semibold text-yellow-200">
+          <div className="mt-8 rounded-2xl border border-mundial-red/20 bg-mundial-red/10 p-4 text-sm font-semibold text-red-50">
             Al registrarse, el usuario declara haber leído y aceptado estos
             Términos y Condiciones de Uso.
           </div>

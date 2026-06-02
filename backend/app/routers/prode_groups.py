@@ -4,6 +4,9 @@ from app.core.deps import CurrentUser, DbSession
 from app.models.prode_group import GroupMemberRole, ProdeGroup
 from app.schemas.prode_group import (
     GroupMemberRead,
+    GroupPrizeCreate,
+    GroupPrizeRead,
+    GroupPrizeUpdate,
     JoinGroupRequest,
     ProdeGroupCreate,
     ProdeGroupDetail,
@@ -13,14 +16,19 @@ from app.schemas.prode_group import (
 from app.services.group_service import (
     count_group_members,
     create_group,
+    create_group_prize,
+    delete_group_prize,
     ensure_personal_group_for_user,
     get_group_by_id,
     get_group_member,
+    get_group_prize_by_id,
     join_group_by_code,
     leave_group,
+    list_group_prizes,
     list_my_groups,
     remove_member_from_group,
     update_group,
+    update_group_prize,
 )
 
 
@@ -149,10 +157,94 @@ def group_detail(
         for member in group.members
     ]
 
+    prizes = [
+        GroupPrizeRead.model_validate(prize)
+        for prize in group.prizes
+    ]
+
     return ProdeGroupDetail(
         **base.model_dump(),
         members=members,
+        prizes=prizes,
     )
+
+
+@router.get("/{group_id}/prizes", response_model=list[GroupPrizeRead])
+def group_prizes(
+    group_id: int,
+    db: DbSession,
+    current_user: CurrentUser,
+):
+    group = require_group_access(db, group_id, current_user)
+    return list_group_prizes(db, group.id)
+
+
+@router.post("/{group_id}/prizes", response_model=GroupPrizeRead, status_code=status.HTTP_201_CREATED)
+def create_my_group_prize(
+    group_id: int,
+    data: GroupPrizeCreate,
+    db: DbSession,
+    current_user: CurrentUser,
+):
+    group = require_group_owner(db, group_id, current_user)
+
+    return create_group_prize(
+        db=db,
+        group=group,
+        title=data.title,
+        description=data.description,
+        amount_label=data.amount_label,
+        position_order=data.position_order,
+        current_user=current_user,
+    )
+
+
+@router.patch("/{group_id}/prizes/{prize_id}", response_model=GroupPrizeRead)
+def update_my_group_prize(
+    group_id: int,
+    prize_id: int,
+    data: GroupPrizeUpdate,
+    db: DbSession,
+    current_user: CurrentUser,
+):
+    group = require_group_owner(db, group_id, current_user)
+    prize = get_group_prize_by_id(db, prize_id)
+
+    if not prize or prize.group_id != group.id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Premio no encontrado",
+        )
+
+    return update_group_prize(
+        db=db,
+        prize=prize,
+        title=data.title,
+        description=data.description,
+        amount_label=data.amount_label,
+        position_order=data.position_order,
+    )
+
+
+@router.delete("/{group_id}/prizes/{prize_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_my_group_prize(
+    group_id: int,
+    prize_id: int,
+    db: DbSession,
+    current_user: CurrentUser,
+):
+    group = require_group_owner(db, group_id, current_user)
+    prize = get_group_prize_by_id(db, prize_id)
+
+    if not prize or prize.group_id != group.id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Premio no encontrado",
+        )
+
+    delete_group_prize(db, prize)
+
+    return None
 
 
 @router.patch("/{group_id}", response_model=ProdeGroupRead)

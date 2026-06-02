@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 from app.schemas.match import MatchRead
 from app.schemas.prode_group import ProdeGroupRead
+from app.schemas.user import UserRead
 
 
 class PredictionCreate(BaseModel):
@@ -70,3 +71,7 @@ class MatchPredictionStatus(BaseModel):
 class GroupPredictionsRead(BaseModel):
     group: ProdeGroupRead
     items: list[MatchPredictionStatus]
+
+class GroupPredictionRead(PredictionSimpleRead):
+    match: MatchRead
+    user: UserRead

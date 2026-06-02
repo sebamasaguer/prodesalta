@@ -222,7 +222,7 @@ export function AdminTeamsPage() {
     <div>
       <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
             Administración
           </p>
 
@@ -230,7 +230,7 @@ export function AdminTeamsPage() {
             Países / Equipos
           </h1>
 
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-slate-300">
             Administrá los países del Mundial 2026, sus códigos y banderas.
           </p>
         </div>
@@ -245,13 +245,13 @@ export function AdminTeamsPage() {
       </div>
 
       {errorMessage && (
-        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200">
+        <div className="mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100">
           {errorMessage}
         </div>
       )}
 
       {successMessage && (
-        <div className="mb-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 font-semibold text-emerald-200">
+        <div className="mb-6 rounded-2xl border border-mundial-green/30 bg-mundial-green/10 px-4 py-3 font-semibold text-mundial-greenSoft">
           {successMessage}
         </div>
       )}
@@ -262,7 +262,7 @@ export function AdminTeamsPage() {
           className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl"
         >
           <div className="mb-5 flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400 text-slate-950">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-mundial-green text-mundial-dark">
               <Plus size={24} />
             </div>
 
@@ -271,7 +271,7 @@ export function AdminTeamsPage() {
 
           <div className="space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 Nombre del país
               </label>
 
@@ -284,13 +284,13 @@ export function AdminTeamsPage() {
                   }))
                 }
                 placeholder="Argentina"
-                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+                className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
                 required
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 Código
               </label>
 
@@ -303,13 +303,13 @@ export function AdminTeamsPage() {
                   }))
                 }
                 placeholder="ARG"
-                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 uppercase text-white outline-none focus:border-emerald-400"
+                className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 uppercase text-white outline-none focus:border-mundial-green"
                 required
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 URL bandera opcional
               </label>
 
@@ -322,13 +322,13 @@ export function AdminTeamsPage() {
                   }))
                 }
                 placeholder="https://..."
-                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+                className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
               />
             </div>
 
             <button
               disabled={isCreating}
-              className="w-full rounded-2xl bg-emerald-400 px-5 py-3 font-black text-slate-950 hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isCreating ? "Creando..." : "Crear país"}
             </button>
@@ -340,26 +340,26 @@ export function AdminTeamsPage() {
             <div>
               <h2 className="text-2xl font-black">Países cargados</h2>
 
-              <p className="mt-1 text-sm text-slate-400">
+              <p className="mt-1 text-sm text-slate-300">
                 Mostrando {filteredTeams.length} de {teams.length}.
               </p>
             </div>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 focus-within:border-emerald-400 md:w-80">
-              <Search size={18} className="text-slate-500" />
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 focus-within:border-mundial-green md:w-80">
+              <Search size={18} className="text-slate-400" />
 
               <input
                 value={searchText}
                 onChange={(event) => setSearchText(event.target.value)}
                 placeholder="Buscar país o código..."
-                className="w-full bg-transparent text-white outline-none placeholder:text-slate-600"
+                className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
               />
 
               {searchText && (
                 <button
                   type="button"
                   onClick={() => setSearchText("")}
-                  className="text-slate-500 hover:text-white"
+                  className="text-slate-400 hover:text-white"
                 >
                   <X size={16} />
                 </button>
@@ -368,16 +368,16 @@ export function AdminTeamsPage() {
           </div>
 
           {isLoading ? (
-            <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-6 text-slate-300">
+            <div className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-6 text-slate-200">
               Cargando países...
             </div>
           ) : filteredTeams.length === 0 ? (
-            <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-8 text-center">
-              <Flag className="mx-auto mb-4 text-slate-500" size={36} />
+            <div className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-8 text-center">
+              <Flag className="mx-auto mb-4 text-slate-400" size={36} />
 
               <h3 className="text-xl font-black">No hay países encontrados</h3>
 
-              <p className="mt-2 text-sm text-slate-400">
+              <p className="mt-2 text-sm text-slate-300">
                 Probá cambiar el filtro de búsqueda.
               </p>
             </div>
@@ -389,7 +389,7 @@ export function AdminTeamsPage() {
                 return (
                   <div
                     key={team.id}
-                    className="rounded-2xl border border-white/10 bg-slate-950/70 p-4"
+                    className="rounded-2xl border border-white/10 bg-mundial-dark/70 p-4"
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5">
@@ -400,7 +400,7 @@ export function AdminTeamsPage() {
                             className="h-full w-full object-cover"
                           />
                         ) : (
-                          <Flag className="text-slate-500" size={24} />
+                          <Flag className="text-slate-400" size={24} />
                         )}
                       </div>
 
@@ -409,7 +409,7 @@ export function AdminTeamsPage() {
                           {team.name}
                         </p>
 
-                        <p className="mt-1 text-sm font-black text-yellow-300">
+                        <p className="mt-1 text-sm font-black text-red-100">
                           {team.code}
                         </p>
                       </div>
@@ -432,10 +432,10 @@ export function AdminTeamsPage() {
 
       {editingTeam && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-8">
-          <div className="w-full max-w-xl rounded-3xl border border-white/10 bg-slate-950 p-6 shadow-2xl">
+          <div className="w-full max-w-xl rounded-3xl border border-white/10 bg-mundial-dark p-6 shadow-2xl">
             <div className="mb-6 flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-black uppercase tracking-[0.2em] text-yellow-300">
+                <p className="text-sm font-black uppercase tracking-[0.2em] text-red-100">
                   Editar país
                 </p>
 
@@ -446,7 +446,7 @@ export function AdminTeamsPage() {
 
               <button
                 onClick={closeEdit}
-                className="rounded-2xl border border-white/10 bg-white/5 p-3 text-slate-300 hover:bg-white/10 hover:text-white"
+                className="rounded-2xl border border-white/10 bg-white/5 p-3 text-slate-200 hover:bg-white/10 hover:text-white"
               >
                 <X size={20} />
               </button>
@@ -454,7 +454,7 @@ export function AdminTeamsPage() {
 
             <form onSubmit={handleSaveEdit} className="space-y-4">
               <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-4">
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-slate-900">
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-mundial-dark">
                   {resolveFlagUrl(editForm.flag_url) ? (
                     <img
                       src={resolveFlagUrl(editForm.flag_url) || ""}
@@ -462,20 +462,20 @@ export function AdminTeamsPage() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <Flag className="text-slate-500" size={32} />
+                    <Flag className="text-slate-400" size={32} />
                   )}
                 </div>
 
                 <div className="flex-1">
-                  <p className="text-sm font-bold text-slate-300">
+                  <p className="text-sm font-bold text-slate-200">
                     Bandera del país
                   </p>
 
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-xs text-slate-400">
                     Podés pegar una URL o subir una imagen desde tu equipo.
                   </p>
 
-                  <label className="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-emerald-400 px-4 py-2 text-sm font-black text-slate-950 hover:bg-emerald-300">
+                  <label className="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-mundial-green px-4 py-2 text-sm font-black text-mundial-dark hover:bg-mundial-greenLight">
                     <ImagePlus size={16} />
                     {isUploadingFlag ? "Subiendo..." : "Subir imagen"}
                     <input
@@ -490,7 +490,7 @@ export function AdminTeamsPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-300">
+                <label className="mb-2 block text-sm font-bold text-slate-200">
                   Nombre del país
                 </label>
 
@@ -502,13 +502,13 @@ export function AdminTeamsPage() {
                       name: event.target.value,
                     }))
                   }
-                  className="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 text-white outline-none focus:border-yellow-400"
+                  className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-red"
                   required
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-300">
+                <label className="mb-2 block text-sm font-bold text-slate-200">
                   Código
                 </label>
 
@@ -520,13 +520,13 @@ export function AdminTeamsPage() {
                       code: event.target.value.toUpperCase(),
                     }))
                   }
-                  className="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 uppercase text-white outline-none focus:border-yellow-400"
+                  className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 uppercase text-white outline-none focus:border-mundial-red"
                   required
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-bold text-slate-300">
+                <label className="mb-2 block text-sm font-bold text-slate-200">
                   URL bandera
                 </label>
 
@@ -539,7 +539,7 @@ export function AdminTeamsPage() {
                     }))
                   }
                   placeholder="https://... o /static/uploads/flags/archivo.png"
-                  className="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 text-white outline-none focus:border-yellow-400"
+                  className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-red"
                 />
               </div>
 
@@ -555,7 +555,7 @@ export function AdminTeamsPage() {
                 <button
                   type="submit"
                   disabled={isSavingEdit}
-                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-yellow-400 px-5 py-3 font-black text-slate-950 hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-mundial-red px-5 py-3 font-black text-mundial-dark hover:bg-mundial-redLight disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <Save size={18} />
                   {isSavingEdit ? "Guardando..." : "Guardar cambios"}

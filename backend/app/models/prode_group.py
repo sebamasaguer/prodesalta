@@ -55,6 +55,12 @@ class ProdeGroup(Base):
         back_populates="group",
         cascade="all, delete-orphan",
     )
+    prizes = relationship(
+        "GroupPrize",
+        back_populates="group",
+        cascade="all, delete-orphan",
+        order_by="GroupPrize.position_order.asc(), GroupPrize.id.asc()",
+    )
 
 
 class GroupMember(Base):

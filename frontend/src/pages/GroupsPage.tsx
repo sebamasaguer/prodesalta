@@ -34,7 +34,7 @@ export function GroupsPage() {
     <div>
       <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
             Grupos de Prode
           </p>
 
@@ -42,7 +42,7 @@ export function GroupsPage() {
             Mis grupos
           </h1>
 
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-slate-300">
             Creá grupos, compartí códigos de invitación y competí con tus amigos.
           </p>
         </div>
@@ -58,14 +58,14 @@ export function GroupsPage() {
 
           <Link
             to="/grupos/unirse"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-yellow-400/30 bg-yellow-400/10 px-5 py-3 font-black text-yellow-300 hover:bg-yellow-400/20"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-5 py-3 font-black text-red-100 hover:bg-mundial-red/20"
           >
             Unirme con código
           </Link>
 
           <Link
             to="/grupos/nuevo"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-5 py-3 font-black text-slate-950 hover:bg-emerald-300"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight"
           >
             <Plus size={18} />
             Crear grupo
@@ -74,18 +74,18 @@ export function GroupsPage() {
       </div>
 
       {errorMessage && (
-        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200">
+        <div className="mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100">
           {errorMessage}
         </div>
       )}
 
       {isLoading ? (
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-300">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-200">
           Cargando grupos...
         </div>
       ) : groups.length === 0 ? (
         <div className="rounded-3xl border border-white/10 bg-white/5 p-10 text-center">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-emerald-400/10 text-emerald-300">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-mundial-green/10 text-mundial-greenSoft">
             <Users size={34} />
           </div>
 
@@ -93,7 +93,7 @@ export function GroupsPage() {
             Todavía no tenés grupos
           </h2>
 
-          <p className="mx-auto mt-3 max-w-xl text-slate-400">
+          <p className="mx-auto mt-3 max-w-xl text-slate-300">
             Podés crear tu propio grupo de Prode o unirte a uno existente usando
             el código de invitación que te comparta el organizador.
           </p>
@@ -101,7 +101,7 @@ export function GroupsPage() {
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               to="/grupos/nuevo"
-              className="rounded-2xl bg-emerald-400 px-5 py-3 font-black text-slate-950 hover:bg-emerald-300"
+              className="rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight"
             >
               Crear grupo
             </Link>

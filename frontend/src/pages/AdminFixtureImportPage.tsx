@@ -124,7 +124,7 @@ export function AdminFixtureImportPage() {
   return (
     <div>
       <div className="mb-8">
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-yellow-300">
+        <p className="text-sm font-black uppercase tracking-[0.2em] text-red-100">
           Administración
         </p>
 
@@ -132,14 +132,14 @@ export function AdminFixtureImportPage() {
           Importar fixture por Excel
         </h1>
 
-        <p className="mt-2 text-slate-400">
+        <p className="mt-2 text-slate-300">
           Descargá la plantilla, completá partidos y cargá el fixture completo
           de forma masiva.
         </p>
       </div>
 
       {errorMessage && (
-        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200">
+        <div className="mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100">
           {errorMessage}
         </div>
       )}
@@ -148,8 +148,8 @@ export function AdminFixtureImportPage() {
         <div
           className={
             commitResult.ok
-              ? "mb-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 font-semibold text-emerald-200"
-              : "mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200"
+              ? "mb-6 rounded-2xl border border-mundial-green/30 bg-mundial-green/10 px-4 py-3 font-semibold text-mundial-greenSoft"
+              : "mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100"
           }
         >
           <p>
@@ -177,7 +177,7 @@ export function AdminFixtureImportPage() {
 
       <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
         <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl">
-          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-yellow-400/10 text-yellow-300">
+          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-mundial-red/10 text-red-100">
             <FileSpreadsheet size={32} />
           </div>
 
@@ -185,25 +185,25 @@ export function AdminFixtureImportPage() {
             Plantilla Excel
           </h2>
 
-          <p className="mt-2 text-sm leading-6 text-slate-400">
+          <p className="mt-2 text-sm leading-6 text-slate-300">
             La plantilla contiene las columnas obligatorias y ejemplos de carga.
           </p>
 
           <button
             onClick={handleDownloadTemplate}
             disabled={isDownloading}
-            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-yellow-400 px-5 py-3 font-black text-slate-950 hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-mundial-red px-5 py-3 font-black text-mundial-dark hover:bg-mundial-redLight disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Download size={18} />
             {isDownloading ? "Descargando..." : "Descargar plantilla"}
           </button>
 
-          <div className="mt-6 rounded-2xl border border-white/10 bg-slate-950/70 p-4">
-            <p className="mb-3 text-sm font-black text-slate-300">
+          <div className="mt-6 rounded-2xl border border-white/10 bg-mundial-dark/70 p-4">
+            <p className="mb-3 text-sm font-black text-slate-200">
               Columnas requeridas
             </p>
 
-            <div className="grid gap-2 text-sm text-slate-400 sm:grid-cols-2">
+            <div className="grid gap-2 text-sm text-slate-300 sm:grid-cols-2">
               <span>torneo</span>
               <span>anio</span>
               <span>fase</span>
@@ -223,21 +223,21 @@ export function AdminFixtureImportPage() {
             Subir archivo
           </h2>
 
-          <p className="mt-2 text-sm leading-6 text-slate-400">
+          <p className="mt-2 text-sm leading-6 text-slate-300">
             Primero validá el archivo con vista previa. Solo se permite importar
             si todas las filas son válidas.
           </p>
 
-          <div className="mt-5 rounded-2xl border border-dashed border-white/20 bg-slate-950/60 p-6">
+          <div className="mt-5 rounded-2xl border border-dashed border-white/20 bg-mundial-dark/60 p-6">
             <input
               type="file"
               accept=".xlsx,.xlsm"
               onChange={handleFileChange}
-              className="block w-full text-sm text-slate-300 file:mr-4 file:rounded-xl file:border-0 file:bg-emerald-400 file:px-4 file:py-2 file:font-black file:text-slate-950 hover:file:bg-emerald-300"
+              className="block w-full text-sm text-slate-200 file:mr-4 file:rounded-xl file:border-0 file:bg-mundial-green file:px-4 file:py-2 file:font-black file:text-mundial-dark hover:file:bg-mundial-greenLight"
             />
 
             {selectedFile && (
-              <p className="mt-3 text-sm text-slate-400">
+              <p className="mt-3 text-sm text-slate-300">
                 Archivo seleccionado:{" "}
                 <span className="font-bold text-white">{selectedFile.name}</span>
               </p>
@@ -257,7 +257,7 @@ export function AdminFixtureImportPage() {
             <button
               onClick={handleCommit}
               disabled={!canImport || isImporting}
-              className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-5 py-3 font-black text-slate-950 hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Upload size={18} />
               {isImporting ? "Importando..." : "Importar fixture"}
@@ -270,7 +270,7 @@ export function AdminFixtureImportPage() {
         <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl">
           <div className="mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-center">
             <div>
-              <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+              <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
                 Vista previa
               </p>
 
@@ -284,11 +284,11 @@ export function AdminFixtureImportPage() {
                 Total: {preview.total_rows}
               </span>
 
-              <span className="rounded-full bg-emerald-400/10 px-4 py-2 text-sm font-bold text-emerald-300">
+              <span className="rounded-full bg-mundial-green/10 px-4 py-2 text-sm font-bold text-mundial-greenSoft">
                 Válidas: {preview.valid_rows}
               </span>
 
-              <span className="rounded-full bg-red-500/10 px-4 py-2 text-sm font-bold text-red-300">
+              <span className="rounded-full bg-mundial-red/10 px-4 py-2 text-sm font-bold text-red-100">
                 Errores: {preview.invalid_rows}
               </span>
             </div>
@@ -297,7 +297,7 @@ export function AdminFixtureImportPage() {
           <div className="overflow-hidden rounded-2xl border border-white/10">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[1250px] border-collapse text-left">
-                <thead className="bg-slate-950/80 text-xs uppercase tracking-wider text-slate-400">
+                <thead className="bg-mundial-dark/80 text-xs uppercase tracking-wider text-slate-300">
                   <tr>
                     <th className="px-4 py-4">Estado</th>
                     <th className="px-4 py-4">Fila</th>
@@ -318,12 +318,12 @@ export function AdminFixtureImportPage() {
                     <tr key={row.row_number} className="bg-white/[0.02]">
                       <td className="px-4 py-4">
                         {row.valid ? (
-                          <span className="inline-flex items-center gap-2 rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-black text-emerald-300">
+                          <span className="inline-flex items-center gap-2 rounded-full bg-mundial-green/10 px-3 py-1 text-xs font-black text-mundial-greenSoft">
                             <CheckCircle2 size={14} />
                             OK
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-2 rounded-full bg-red-500/10 px-3 py-1 text-xs font-black text-red-300">
+                          <span className="inline-flex items-center gap-2 rounded-full bg-mundial-red/10 px-3 py-1 text-xs font-black text-red-100">
                             <XCircle size={14} />
                             Error
                           </span>
@@ -352,14 +352,14 @@ export function AdminFixtureImportPage() {
 
                       <td className="px-4 py-4 font-bold">
                         {row.local || "-"}
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-slate-400">
                           {row.codigo_local || "-"}
                         </p>
                       </td>
 
                       <td className="px-4 py-4 font-bold">
                         {row.visitante || "-"}
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-slate-400">
                           {row.codigo_visitante || "-"}
                         </p>
                       </td>
@@ -374,9 +374,9 @@ export function AdminFixtureImportPage() {
 
                       <td className="px-4 py-4">
                         {row.errors.length === 0 ? (
-                          <span className="text-slate-500">-</span>
+                          <span className="text-slate-400">-</span>
                         ) : (
-                          <ul className="list-disc space-y-1 pl-4 text-sm text-red-300">
+                          <ul className="list-disc space-y-1 pl-4 text-sm text-red-100">
                             {row.errors.map((error, index) => (
                               <li key={index}>{error}</li>
                             ))}
@@ -391,7 +391,7 @@ export function AdminFixtureImportPage() {
           </div>
 
           {preview.invalid_rows > 0 && (
-            <div className="mt-5 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-200">
+            <div className="mt-5 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 text-sm font-semibold text-red-100">
               Hay filas con errores. Corregí el Excel y volvé a subirlo antes de importar.
             </div>
           )}

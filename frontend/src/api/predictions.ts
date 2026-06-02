@@ -1,5 +1,6 @@
 import { api } from "./client";
 import type {
+  GroupPrediction,
   MatchPredictionStatus,
   Prediction,
   SavePredictionPayload,
@@ -30,6 +31,16 @@ export async function updatePrediction(
   const response = await api.patch<Prediction>(
     `/predictions/${predictionId}`,
     payload,
+  );
+
+  return response.data;
+}
+
+export async function listGroupPredictions(
+  groupId: number,
+): Promise<GroupPrediction[]> {
+  const response = await api.get<GroupPrediction[]>(
+    `/predictions/group/${groupId}/all`,
   );
 
   return response.data;

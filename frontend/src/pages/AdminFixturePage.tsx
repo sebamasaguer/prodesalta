@@ -165,17 +165,17 @@ export function AdminFixturePage() {
   return (
     <div>
       <div className="mb-8">
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+        <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
           Administración
         </p>
         <h1 className="mt-2 text-4xl font-black">Fixture</h1>
-        <p className="mt-2 text-slate-400">
+        <p className="mt-2 text-slate-300">
           Cargá partidos, fases, fechas, cierres de predicción y resultados.
         </p>
       </div>
 
       {errorMessage && (
-        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200">
+        <div className="mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100">
           {errorMessage}
         </div>
       )}
@@ -188,7 +188,7 @@ export function AdminFixturePage() {
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Torneo
             </label>
             <select
@@ -199,7 +199,7 @@ export function AdminFixturePage() {
                   tournament_id: event.target.value,
                 }))
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-green"
               required
             >
               <option value="">Seleccionar</option>
@@ -212,7 +212,7 @@ export function AdminFixturePage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Fase
             </label>
             <select
@@ -223,7 +223,7 @@ export function AdminFixturePage() {
                   phase: event.target.value as MatchPhase,
                 }))
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-green"
             >
               {phases.map((phase) => (
                 <option key={phase} value={phase}>
@@ -234,7 +234,7 @@ export function AdminFixturePage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Grupo
             </label>
             <input
@@ -246,12 +246,12 @@ export function AdminFixturePage() {
                 }))
               }
               placeholder="A"
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 uppercase outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 uppercase outline-none focus:border-mundial-green"
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Fecha partido
             </label>
             <input
@@ -263,13 +263,13 @@ export function AdminFixturePage() {
                   match_datetime: event.target.value,
                 }))
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-green"
               required
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Cierre predicción
             </label>
             <input
@@ -281,13 +281,13 @@ export function AdminFixturePage() {
                   prediction_deadline: event.target.value,
                 }))
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-green"
               required
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Local
             </label>
             <select
@@ -298,7 +298,7 @@ export function AdminFixturePage() {
                   home_team_id: event.target.value,
                 }))
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-green"
               required
             >
               <option value="">Seleccionar</option>
@@ -311,7 +311,7 @@ export function AdminFixturePage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Visitante
             </label>
             <select
@@ -322,7 +322,7 @@ export function AdminFixturePage() {
                   away_team_id: event.target.value,
                 }))
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-green"
               required
             >
               <option value="">Seleccionar</option>
@@ -337,7 +337,7 @@ export function AdminFixturePage() {
           <div className="flex items-end">
             <button
               disabled={!canCreateMatch}
-              className="w-full rounded-2xl bg-emerald-400 px-5 py-3 font-black text-slate-950 hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight disabled:cursor-not-allowed disabled:opacity-60"
             >
               Crear partido
             </button>
@@ -350,7 +350,7 @@ export function AdminFixturePage() {
 
         <div className="overflow-hidden rounded-2xl border border-white/10">
           <table className="w-full min-w-[1100px] border-collapse text-left">
-            <thead className="bg-slate-950/80 text-xs uppercase tracking-wider text-slate-400">
+            <thead className="bg-mundial-dark/80 text-xs uppercase tracking-wider text-slate-300">
               <tr>
                 <th className="px-4 py-4">Partido</th>
                 <th className="px-4 py-4">Fase</th>
@@ -373,21 +373,21 @@ export function AdminFixturePage() {
                   <tr key={match.id} className="bg-white/[0.02]">
                     <td className="px-4 py-4 font-bold">
                       {homeName(match)} vs {awayName(match)}
-                      <p className="text-xs font-normal text-slate-500">
+                      <p className="text-xs font-normal text-slate-400">
                         {match.tournament.name}
                       </p>
                     </td>
 
-                    <td className="px-4 py-4 text-sm text-slate-300">
+                    <td className="px-4 py-4 text-sm text-slate-200">
                       {phaseLabel(match.phase)}
                       {match.world_group ? ` · ${match.world_group}` : ""}
                     </td>
 
-                    <td className="px-4 py-4 text-sm text-slate-300">
+                    <td className="px-4 py-4 text-sm text-slate-200">
                       {formatDateTime(match.match_datetime)}
                     </td>
 
-                    <td className="px-4 py-4 text-sm text-slate-300">
+                    <td className="px-4 py-4 text-sm text-slate-200">
                       {formatDateTime(match.prediction_deadline)}
                     </td>
 
@@ -416,7 +416,7 @@ export function AdminFixturePage() {
                               },
                             }))
                           }
-                          className="w-16 rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-center font-black outline-none focus:border-yellow-400"
+                          className="w-16 rounded-xl border border-white/10 bg-mundial-dark px-3 py-2 text-center font-black outline-none focus:border-mundial-red"
                         />
                         <span className="font-black">-</span>
                         <input
@@ -432,7 +432,7 @@ export function AdminFixturePage() {
                               },
                             }))
                           }
-                          className="w-16 rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-center font-black outline-none focus:border-yellow-400"
+                          className="w-16 rounded-xl border border-white/10 bg-mundial-dark px-3 py-2 text-center font-black outline-none focus:border-mundial-red"
                         />
                       </div>
                     </td>
@@ -442,7 +442,7 @@ export function AdminFixturePage() {
                         {match.status === "SCHEDULED" && (
                           <button
                             onClick={() => handleClose(match.id)}
-                            className="rounded-xl bg-yellow-400/10 px-3 py-2 text-sm font-bold text-yellow-300 hover:bg-yellow-400/20"
+                            className="rounded-xl bg-mundial-red/10 px-3 py-2 text-sm font-bold text-red-100 hover:bg-mundial-red/20"
                           >
                             Cerrar
                           </button>
@@ -450,7 +450,7 @@ export function AdminFixturePage() {
 
                         <button
                           onClick={() => handleResult(match)}
-                          className="rounded-xl bg-emerald-400/10 px-3 py-2 text-sm font-bold text-emerald-300 hover:bg-emerald-400/20"
+                          className="rounded-xl bg-mundial-green/10 px-3 py-2 text-sm font-bold text-mundial-greenSoft hover:bg-mundial-green/20"
                         >
                           Guardar resultado
                         </button>
@@ -469,7 +469,7 @@ export function AdminFixturePage() {
 
               {matches.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-slate-400">
+                  <td colSpan={7} className="px-4 py-8 text-center text-slate-300">
                     No hay partidos cargados.
                   </td>
                 </tr>

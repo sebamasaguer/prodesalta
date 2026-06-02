@@ -35,7 +35,7 @@ export function JoinGroupPage() {
     <div>
       <Link
         to="/grupos"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-white"
+        className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-slate-300 hover:text-white"
       >
         <ArrowLeft size={18} />
         Volver a mis grupos
@@ -43,11 +43,11 @@ export function JoinGroupPage() {
 
       <div className="mx-auto max-w-xl">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-yellow-400 text-slate-950">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-mundial-red text-mundial-dark">
             <KeyRound size={34} />
           </div>
 
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-yellow-300">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-red-100">
             Código de invitación
           </p>
 
@@ -55,7 +55,7 @@ export function JoinGroupPage() {
             Unirme a un grupo
           </h1>
 
-          <p className="mt-3 text-slate-400">
+          <p className="mt-3 text-slate-300">
             Ingresá el código que te compartió el organizador del grupo.
           </p>
         </div>
@@ -65,12 +65,12 @@ export function JoinGroupPage() {
           className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl"
         >
           {errorMessage && (
-            <div className="mb-5 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-200">
+            <div className="mb-5 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 text-sm font-semibold text-red-100">
               {errorMessage}
             </div>
           )}
 
-          <label className="mb-2 block text-sm font-bold text-slate-300">
+          <label className="mb-2 block text-sm font-bold text-slate-200">
             Código del grupo
           </label>
 
@@ -81,14 +81,14 @@ export function JoinGroupPage() {
             placeholder="Ej: ARG2026"
             minLength={4}
             maxLength={20}
-            className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-4 text-center text-2xl font-black uppercase tracking-[0.25em] text-yellow-300 outline-none focus:border-yellow-400"
+            className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-4 text-center text-2xl font-black uppercase tracking-[0.25em] text-red-100 outline-none focus:border-mundial-red"
             required
           />
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="mt-5 w-full rounded-2xl bg-yellow-400 px-5 py-4 font-black text-slate-950 hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-5 w-full rounded-2xl bg-mundial-red px-5 py-4 font-black text-mundial-dark hover:bg-mundial-redLight disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSubmitting ? "Ingresando..." : "Unirme al grupo"}
           </button>

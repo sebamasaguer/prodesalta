@@ -38,11 +38,11 @@ export function AdminTournamentsPage() {
   return (
     <div>
       <div className="mb-8">
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-yellow-300">
+        <p className="text-sm font-black uppercase tracking-[0.2em] text-red-100">
           Administración
         </p>
         <h1 className="mt-2 text-4xl font-black">Torneos</h1>
-        <p className="mt-2 text-slate-400">
+        <p className="mt-2 text-slate-300">
           Creá torneos para asociar equipos y partidos.
         </p>
       </div>
@@ -55,14 +55,14 @@ export function AdminTournamentsPage() {
           <h2 className="mb-5 text-2xl font-black">Nuevo torneo</h2>
 
           {errorMessage && (
-            <div className="mb-5 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+            <div className="mb-5 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 text-sm text-red-100">
               {errorMessage}
             </div>
           )}
 
           <div className="space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 Nombre
               </label>
               <input
@@ -70,13 +70,13 @@ export function AdminTournamentsPage() {
                 onChange={(event) =>
                   setForm((current) => ({ ...current, name: event.target.value }))
                 }
-                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-yellow-400"
+                className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-red"
                 required
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 Año
               </label>
               <input
@@ -88,13 +88,13 @@ export function AdminTournamentsPage() {
                     year: Number(event.target.value),
                   }))
                 }
-                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-yellow-400"
+                className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-red"
                 required
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 Descripción
               </label>
               <textarea
@@ -106,11 +106,11 @@ export function AdminTournamentsPage() {
                   }))
                 }
                 rows={4}
-                className="w-full resize-none rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 outline-none focus:border-yellow-400"
+                className="w-full resize-none rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 outline-none focus:border-mundial-red"
               />
             </div>
 
-            <button className="w-full rounded-2xl bg-yellow-400 px-5 py-3 font-black text-slate-950 hover:bg-yellow-300">
+            <button className="w-full rounded-2xl bg-mundial-red px-5 py-3 font-black text-mundial-dark hover:bg-mundial-redLight">
               Crear torneo
             </button>
           </div>
@@ -123,14 +123,14 @@ export function AdminTournamentsPage() {
             {tournaments.map((tournament) => (
               <div
                 key={tournament.id}
-                className="rounded-2xl border border-white/10 bg-slate-950/60 p-4"
+                className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-4"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-xl font-black">
                       {tournament.name} · {tournament.year}
                     </p>
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="mt-1 text-sm text-slate-300">
                       {tournament.description || "Sin descripción"}
                     </p>
                   </div>
@@ -138,8 +138,8 @@ export function AdminTournamentsPage() {
                   <span
                     className={
                       tournament.is_active
-                        ? "rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-black text-emerald-300"
-                        : "rounded-full bg-slate-400/10 px-3 py-1 text-xs font-black text-slate-300"
+                        ? "rounded-full bg-mundial-green/10 px-3 py-1 text-xs font-black text-mundial-greenSoft"
+                        : "rounded-full bg-slate-400/10 px-3 py-1 text-xs font-black text-slate-200"
                     }
                   >
                     {tournament.is_active ? "Activo" : "Inactivo"}
@@ -149,7 +149,7 @@ export function AdminTournamentsPage() {
             ))}
 
             {tournaments.length === 0 && (
-              <p className="text-slate-400">No hay torneos cargados.</p>
+              <p className="text-slate-300">No hay torneos cargados.</p>
             )}
           </div>
         </div>

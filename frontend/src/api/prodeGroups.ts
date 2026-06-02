@@ -1,6 +1,8 @@
 import { api } from "./client";
 import type {
   CreateGroupPayload,
+  GroupPrize,
+  GroupPrizePayload,
   JoinGroupPayload,
   ProdeGroup,
   ProdeGroupDetail,
@@ -44,4 +46,34 @@ export async function removeGroupMember(
 export async function getMyPersonalGroup(): Promise<ProdeGroup> {
   const response = await api.get<ProdeGroup>("/prode-groups/personal/me");
   return response.data;
+}
+
+export async function createGroupPrize(
+  groupId: number,
+  payload: GroupPrizePayload,
+): Promise<GroupPrize> {
+  const response = await api.post<GroupPrize>(
+    `/prode-groups/${groupId}/prizes`,
+    payload,
+  );
+  return response.data;
+}
+
+export async function updateGroupPrize(
+  groupId: number,
+  prizeId: number,
+  payload: Partial<GroupPrizePayload>,
+): Promise<GroupPrize> {
+  const response = await api.patch<GroupPrize>(
+    `/prode-groups/${groupId}/prizes/${prizeId}`,
+    payload,
+  );
+  return response.data;
+}
+
+export async function deleteGroupPrize(
+  groupId: number,
+  prizeId: number,
+): Promise<void> {
+  await api.delete(`/prode-groups/${groupId}/prizes/${prizeId}`);
 }

@@ -8,11 +8,13 @@ from app.core.db import Base
 
 # Importar módulos reales para registrar modelos en Base.metadata.
 from app.models.user import User  # noqa: F401
+from app.models.email_verification import EmailVerificationLog, PendingEmailRegistration  # noqa: F401
 from app.models.team import Team  # noqa: F401
 from app.models.tournament import Tournament  # noqa: F401
 from app.models.match import Match  # noqa: F401
 from app.models.prediction import Prediction  # noqa: F401
 from app.models.prode_group import ProdeGroup, GroupMember  # noqa: F401
+from app.models.group_prize import GroupPrize  # noqa: F401
 from app.models.scoring_rule import ScoringRule  # noqa: F401
 
 

@@ -22,6 +22,7 @@ class UserUpdate(BaseModel):
     last_name: str | None = Field(default=None, min_length=2, max_length=120)
     is_active: bool | None = None
     role: UserRole | None = None
+    email_verified: bool | None = None
 
 
 class UserRead(UserBase):
@@ -29,9 +30,20 @@ class UserRead(UserBase):
     role: UserRole
     is_active: bool
     created_at: datetime
+    email_verified_at: datetime | None = None
     terms_accepted_at: datetime | None = None
     terms_version: str | None = None
 
     model_config = {
         "from_attributes": True,
     }
+
+class UserAdminStats(BaseModel):
+    total_users: int
+    active_users: int
+    inactive_users: int
+    verified_users: int
+    unverified_users: int
+    admin_users: int
+    organizer_users: int
+    player_users: int

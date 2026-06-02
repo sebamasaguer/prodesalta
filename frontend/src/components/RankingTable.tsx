@@ -7,9 +7,9 @@ interface RankingTableProps {
 }
 
 function positionClass(position: number): string {
-  if (position === 1) return "bg-yellow-400 text-slate-950";
-  if (position === 2) return "bg-slate-300 text-slate-950";
-  if (position === 3) return "bg-orange-400 text-slate-950";
+  if (position === 1) return "bg-mundial-red text-mundial-dark";
+  if (position === 2) return "bg-slate-300 text-mundial-dark";
+  if (position === 3) return "bg-orange-400 text-mundial-dark";
   return "bg-white/10 text-white";
 }
 
@@ -19,13 +19,13 @@ export function RankingTable({ entries }: RankingTableProps) {
   if (entries.length === 0) {
     return (
       <div className="rounded-3xl border border-white/10 bg-white/5 p-10 text-center">
-        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-yellow-400/10 text-yellow-300">
+        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-mundial-red/10 text-red-100">
           <Trophy size={34} />
         </div>
 
         <h2 className="text-2xl font-black">Todavía no hay ranking</h2>
 
-        <p className="mx-auto mt-3 max-w-xl text-slate-400">
+        <p className="mx-auto mt-3 max-w-xl text-slate-300">
           Cuando los participantes carguen predicciones y existan partidos con
           resultados, se mostrarán las posiciones.
         </p>
@@ -37,7 +37,7 @@ export function RankingTable({ entries }: RankingTableProps) {
     <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-xl">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[950px] border-collapse text-left">
-          <thead className="bg-slate-950/80 text-xs uppercase tracking-wider text-slate-400">
+          <thead className="bg-mundial-dark/80 text-xs uppercase tracking-wider text-slate-300">
             <tr>
               <th className="px-4 py-4">Posición</th>
               <th className="px-4 py-4">Participante</th>
@@ -59,7 +59,7 @@ export function RankingTable({ entries }: RankingTableProps) {
                   key={entry.user_id}
                   className={
                     isCurrentUser
-                      ? "bg-emerald-400/10"
+                      ? "bg-mundial-green/10"
                       : "bg-white/[0.02]"
                   }
                 >
@@ -82,20 +82,20 @@ export function RankingTable({ entries }: RankingTableProps) {
                       <p className="font-black">
                         {entry.user.first_name} {entry.user.last_name}
                         {isCurrentUser && (
-                          <span className="ml-2 rounded-full bg-emerald-400/20 px-2 py-1 text-xs font-black text-emerald-300">
+                          <span className="ml-2 rounded-full bg-mundial-green/20 px-2 py-1 text-xs font-black text-mundial-greenSoft">
                             vos
                           </span>
                         )}
                       </p>
 
-                      <p className="text-sm text-slate-500">
+                      <p className="text-sm text-slate-400">
                         @{entry.user.username}
                       </p>
                     </div>
                   </td>
 
                   <td className="px-4 py-4 text-center">
-                    <span className="text-3xl font-black text-yellow-300">
+                    <span className="text-3xl font-black text-red-100">
                       {entry.total_points}
                     </span>
                   </td>
@@ -104,11 +104,11 @@ export function RankingTable({ entries }: RankingTableProps) {
                     {entry.predictions_count}
                   </td>
 
-                  <td className="px-4 py-4 text-center font-bold text-yellow-300">
+                  <td className="px-4 py-4 text-center font-bold text-red-100">
                     {entry.exact_scores_count}
                   </td>
 
-                  <td className="px-4 py-4 text-center font-bold text-emerald-300">
+                  <td className="px-4 py-4 text-center font-bold text-mundial-greenSoft">
                     {entry.winner_count}
                   </td>
 
@@ -116,7 +116,7 @@ export function RankingTable({ entries }: RankingTableProps) {
                     {entry.goal_difference_count}
                   </td>
 
-                  <td className="px-4 py-4 text-center font-bold text-slate-300">
+                  <td className="px-4 py-4 text-center font-bold text-slate-200">
                     {entry.finished_predictions_count}
                   </td>
                 </tr>

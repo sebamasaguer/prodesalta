@@ -24,8 +24,21 @@ export interface GroupMember {
   user: User;
 }
 
+export interface GroupPrize {
+  id: number;
+  group_id: number;
+  title: string;
+  description: string | null;
+  amount_label: string | null;
+  position_order: number;
+  created_by_user_id: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface ProdeGroupDetail extends ProdeGroup {
   members: GroupMember[];
+  prizes: GroupPrize[];
 }
 
 export interface CreateGroupPayload {
@@ -35,4 +48,11 @@ export interface CreateGroupPayload {
 
 export interface JoinGroupPayload {
   invite_code: string;
+}
+
+export interface GroupPrizePayload {
+  title: string;
+  description?: string | null;
+  amount_label?: string | null;
+  position_order: number;
 }

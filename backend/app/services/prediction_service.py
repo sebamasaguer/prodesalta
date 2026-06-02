@@ -31,6 +31,7 @@ def get_prediction_query():
             joinedload(Prediction.match).joinedload(Match.tournament),
             joinedload(Prediction.match).joinedload(Match.home_team),
             joinedload(Prediction.match).joinedload(Match.away_team),
+            joinedload(Prediction.user),
         )
     )
 
@@ -66,6 +67,22 @@ def list_user_predictions(
         stmt = stmt.where(Prediction.group_id == group_id)
 
     stmt = stmt.order_by(Prediction.created_at.desc())
+
+    return list(db.execute(stmt).scalars().all())
+
+
+def list_group_predictions(
+    db: Session,
+    group_id: int,
+    current_user: User,
+) -> list[Prediction]:
+    validate_group_access(db, group_id, current_user)
+
+    stmt = (
+        get_prediction_query()
+        .where(Prediction.group_id == group_id)
+        .order_by(Prediction.created_at.desc())
+    )
 
     return list(db.execute(stmt).scalars().all())
 

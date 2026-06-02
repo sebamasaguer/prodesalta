@@ -7,6 +7,7 @@ import { AdminFixturePage } from "./pages/AdminFixturePage";
 import { AdminPage } from "./pages/AdminPage";
 import { AdminScoringPage } from "./pages/AdminScoringPage";
 import { AdminTeamsPage } from "./pages/AdminTeamsPage";
+import { AdminUsersPage } from "./pages/AdminUsersPage";
 import { AdminTournamentsPage } from "./pages/AdminTournamentsPage";
 import { CreateGroupPage } from "./pages/CreateGroupPage";
 import { DashboardPage } from "./pages/DashboardPage";
@@ -23,6 +24,7 @@ import { StatsPage } from "./pages/StatsPage";
 import { AdminFixtureImportPage } from "./pages/AdminFixtureImportPage";
 import { RulesPage } from "./pages/RulesPage";
 import { TermsPage } from "./pages/TermsPage";
+import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 
 function App() {
   return (
@@ -32,6 +34,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/verificar-correo" element={<VerifyEmailPage />} />
           <Route path="/terminos" element={<TermsPage />} />
           <Route path="/reglamento" element={<RulesPage />} />
 
@@ -61,6 +64,7 @@ function App() {
             }
           >
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/usuarios" element={<AdminUsersPage />} />
             <Route path="/admin/torneos" element={<AdminTournamentsPage />} />
             <Route path="/admin/equipos" element={<AdminTeamsPage />} />
             <Route path="/admin/fixture" element={<AdminFixturePage />} />

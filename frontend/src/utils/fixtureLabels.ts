@@ -28,11 +28,11 @@ export function statusLabel(status: MatchStatus): string {
 
 export function statusClass(status: MatchStatus): string {
   const classes: Record<MatchStatus, string> = {
-    SCHEDULED: "bg-emerald-400/10 text-emerald-300",
-    CLOSED: "bg-yellow-400/10 text-yellow-300",
-    LIVE: "bg-red-500/10 text-red-300",
+    SCHEDULED: "bg-mundial-green/10 text-mundial-greenSoft",
+    CLOSED: "bg-mundial-red/10 text-red-100",
+    LIVE: "bg-mundial-red/10 text-red-100",
     FINISHED: "bg-blue-400/10 text-blue-300",
-    CANCELLED: "bg-slate-500/10 text-slate-300",
+    CANCELLED: "bg-slate-500/10 text-slate-200",
   };
 
   return classes[status];

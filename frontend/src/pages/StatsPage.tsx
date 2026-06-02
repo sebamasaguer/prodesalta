@@ -69,7 +69,7 @@ const rankingDescription =
     <div>
       <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
             Estadísticas
           </p>
 
@@ -77,7 +77,7 @@ const rankingDescription =
             Estadísticas generales
           </h1>
 
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-slate-300">
             Métricas globales del Prode, ranking general y desempeño por grupo.
           </p>
         </div>
@@ -92,17 +92,17 @@ const rankingDescription =
       </div>
 
       {errorMessage && (
-        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200">
+        <div className="mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100">
           {errorMessage}
         </div>
       )}
 
       {isLoading ? (
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-300">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-200">
           Cargando estadísticas...
         </div>
       ) : !overview ? (
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-300">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-200">
           No hay información disponible.
         </div>
       ) : (
@@ -170,7 +170,7 @@ const rankingDescription =
           <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-6">
             <div className="mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-center">
               <div>
-                <p className="text-sm font-black uppercase tracking-[0.2em] text-yellow-300">
+                <p className="text-sm font-black uppercase tracking-[0.2em] text-red-100">
                   Ranking general
                 </p>
 
@@ -178,7 +178,7 @@ const rankingDescription =
                     {rankingTitle}
                 </h2>
 
-                <p className="mt-2 text-sm text-slate-400">
+                <p className="mt-2 text-sm text-slate-300">
                     {rankingDescription}
                 </p>
               </div>
@@ -189,8 +189,8 @@ const rankingDescription =
                     onClick={() => setActiveTab("general")}
                   className={
                     activeTab === "general"
-                      ? "rounded-xl bg-yellow-400 px-4 py-2 text-sm font-black text-slate-950"
-                      : "rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-slate-300 hover:bg-white/15"
+                      ? "rounded-xl bg-mundial-red px-4 py-2 text-sm font-black text-mundial-dark"
+                      : "rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-slate-200 hover:bg-white/15"
                   }
                 >
                   General ({overview.top_general.length})
@@ -201,8 +201,8 @@ const rankingDescription =
                     onClick={() => setActiveTab("exactos")}
                   className={
                     activeTab === "exactos"
-                      ? "rounded-xl bg-yellow-400 px-4 py-2 text-sm font-black text-slate-950"
-                      : "rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-slate-300 hover:bg-white/15"
+                      ? "rounded-xl bg-mundial-red px-4 py-2 text-sm font-black text-mundial-dark"
+                      : "rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-slate-200 hover:bg-white/15"
                   }
                 >
                   Exactos ({overview.top_exact_scores.filter((entry) => entry.exact_scores_count > 0).length})
@@ -213,8 +213,8 @@ const rankingDescription =
                     onClick={() => setActiveTab("ganadores")}
                   className={
                     activeTab === "ganadores"
-                      ? "rounded-xl bg-yellow-400 px-4 py-2 text-sm font-black text-slate-950"
-                      : "rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-slate-300 hover:bg-white/15"
+                      ? "rounded-xl bg-mundial-red px-4 py-2 text-sm font-black text-mundial-dark"
+                      : "rounded-xl bg-white/10 px-4 py-2 text-sm font-bold text-slate-200 hover:bg-white/15"
                   }
                 >
                   Ganadores ({overview.top_winners.filter((entry) => entry.winner_count > 0).length})
@@ -227,7 +227,7 @@ const rankingDescription =
 
           <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-6">
             <div className="mb-5">
-              <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+              <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
                 Grupos
               </p>
 
@@ -239,7 +239,7 @@ const rankingDescription =
             <div className="overflow-hidden rounded-2xl border border-white/10">
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[900px] border-collapse text-left">
-                  <thead className="bg-slate-950/80 text-xs uppercase tracking-wider text-slate-400">
+                  <thead className="bg-mundial-dark/80 text-xs uppercase tracking-wider text-slate-300">
                     <tr>
                       <th className="px-4 py-4">Grupo</th>
                       <th className="px-4 py-4 text-center">Miembros</th>
@@ -265,11 +265,11 @@ const rankingDescription =
                           {group.predictions_count}
                         </td>
 
-                        <td className="px-4 py-4 text-center text-2xl font-black text-yellow-300">
+                        <td className="px-4 py-4 text-center text-2xl font-black text-red-100">
                           {group.total_points}
                         </td>
 
-                        <td className="px-4 py-4 text-center font-bold text-emerald-300">
+                        <td className="px-4 py-4 text-center font-bold text-mundial-greenSoft">
                           {group.average_points}
                         </td>
 
@@ -278,7 +278,7 @@ const rankingDescription =
                             {group.leader_name || "-"}
                           </p>
 
-                          <p className="text-sm text-yellow-300">
+                          <p className="text-sm text-red-100">
                             {group.leader_points ?? 0} pts
                           </p>
                         </td>
@@ -289,7 +289,7 @@ const rankingDescription =
                       <tr>
                         <td
                           colSpan={6}
-                          className="px-4 py-8 text-center text-slate-400"
+                          className="px-4 py-8 text-center text-slate-300"
                         >
                           Todavía no hay grupos cargados.
                         </td>

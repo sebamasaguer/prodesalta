@@ -1,4 +1,5 @@
 import type { Match } from "./fixture";
+import type { User } from "./auth";
 
 export interface Prediction {
   id: number;
@@ -46,4 +47,9 @@ export interface MatchPredictionStatus {
   prediction: PredictionSimple | null;
   can_predict: boolean;
   lock_reason: string | null;
+}
+
+export interface GroupPrediction extends PredictionSimple {
+  match: Match;
+  user: User;
 }

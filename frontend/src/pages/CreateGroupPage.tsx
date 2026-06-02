@@ -47,14 +47,14 @@ export function CreateGroupPage() {
     <div>
       <Link
         to="/grupos"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-white"
+        className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-slate-300 hover:text-white"
       >
         <ArrowLeft size={18} />
         Volver a mis grupos
       </Link>
 
       <div className="mb-8">
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+        <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
           Nuevo grupo
         </p>
 
@@ -62,7 +62,7 @@ export function CreateGroupPage() {
           Crear grupo de Prode
         </h1>
 
-        <p className="mt-2 text-slate-400">
+        <p className="mt-2 text-slate-300">
           Al crear el grupo se genera automáticamente un código de invitación.
         </p>
       </div>
@@ -73,14 +73,14 @@ export function CreateGroupPage() {
           className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl"
         >
           {errorMessage && (
-            <div className="mb-5 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-200">
+            <div className="mb-5 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 text-sm font-semibold text-red-100">
               {errorMessage}
             </div>
           )}
 
           <div className="space-y-5">
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 Nombre del grupo
               </label>
 
@@ -91,13 +91,13 @@ export function CreateGroupPage() {
                 placeholder="Ej: Los Pibes del Mundial"
                 minLength={3}
                 maxLength={160}
-                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+                className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
                 required
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-bold text-slate-300">
+              <label className="mb-2 block text-sm font-bold text-slate-200">
                 Descripción
               </label>
 
@@ -109,22 +109,22 @@ export function CreateGroupPage() {
                 placeholder="Ej: Prode entre amigos para el Mundial 2026."
                 rows={6}
                 maxLength={2000}
-                className="w-full resize-none rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+                className="w-full resize-none rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-2xl bg-emerald-400 px-5 py-4 font-black text-slate-950 hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-2xl bg-mundial-green px-5 py-4 font-black text-mundial-dark hover:bg-mundial-greenLight disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? "Creando grupo..." : "Crear grupo"}
             </button>
           </div>
         </form>
 
-        <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-6">
-          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-400/10 text-emerald-300">
+        <div className="rounded-3xl border border-white/10 bg-mundial-dark/70 p-6">
+          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-mundial-green/10 text-mundial-greenSoft">
             <Users size={30} />
           </div>
 
@@ -132,7 +132,7 @@ export function CreateGroupPage() {
             ¿Qué pasa después?
           </h2>
 
-          <ul className="mt-5 space-y-4 text-sm leading-6 text-slate-400">
+          <ul className="mt-5 space-y-4 text-sm leading-6 text-slate-300">
             <li>
               <span className="font-bold text-white">1.</span> Se crea el grupo.
             </li>

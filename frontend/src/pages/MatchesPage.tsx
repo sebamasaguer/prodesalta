@@ -158,7 +158,7 @@ export function MatchesPage() {
     <div>
       <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
             Fixture
           </p>
 
@@ -166,7 +166,7 @@ export function MatchesPage() {
             Partidos
           </h1>
 
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-slate-300">
             Fixture completo del Mundial 2026. Filtrá por fase, grupo, estado,
             fecha o país.
           </p>
@@ -185,7 +185,7 @@ export function MatchesPage() {
         <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-center">
           <div>
             <h2 className="text-xl font-black">Filtros</h2>
-            <p className="mt-1 text-sm text-slate-400">
+            <p className="mt-1 text-sm text-slate-300">
               Mostrando {filteredTotal} de {totalMatches} partidos.
             </p>
           </div>
@@ -193,7 +193,7 @@ export function MatchesPage() {
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm font-bold text-red-200 hover:bg-red-500/20"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-mundial-red/20 bg-mundial-red/10 px-4 py-2 text-sm font-bold text-red-100 hover:bg-mundial-red/20"
             >
               <X size={16} />
               Limpiar filtros
@@ -203,24 +203,24 @@ export function MatchesPage() {
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
           <div className="xl:col-span-2">
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Buscar
             </label>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 focus-within:border-emerald-400">
-              <Search size={18} className="text-slate-500" />
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 focus-within:border-mundial-green">
+              <Search size={18} className="text-slate-400" />
 
               <input
                 value={searchText}
                 onChange={(event) => setSearchText(event.target.value)}
                 placeholder="Argentina, México, W74, Final..."
-                className="w-full bg-transparent text-white outline-none placeholder:text-slate-600"
+                className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Fase
             </label>
 
@@ -229,7 +229,7 @@ export function MatchesPage() {
               onChange={(event) =>
                 setSelectedPhase(event.target.value as MatchPhase | "")
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
             >
               {phaseOptions.map((option) => (
                 <option key={option.value || "all"} value={option.value}>
@@ -240,14 +240,14 @@ export function MatchesPage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Grupo
             </label>
 
             <select
               value={selectedGroup}
               onChange={(event) => setSelectedGroup(event.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
             >
               {groupOptions.map((group) => (
                 <option key={group || "all"} value={group}>
@@ -258,7 +258,7 @@ export function MatchesPage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Estado
             </label>
 
@@ -267,7 +267,7 @@ export function MatchesPage() {
               onChange={(event) =>
                 setSelectedStatus(event.target.value as MatchStatus | "")
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
             >
               {statusOptions.map((option) => (
                 <option key={option.value || "all"} value={option.value}>
@@ -278,7 +278,7 @@ export function MatchesPage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Fecha
             </label>
 
@@ -286,20 +286,20 @@ export function MatchesPage() {
               type="date"
               value={selectedDate}
               onChange={(event) => setSelectedDate(event.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
             />
           </div>
         </div>
       </div>
 
       {errorMessage && (
-        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200">
+        <div className="mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100">
           {errorMessage}
         </div>
       )}
 
       {isLoading ? (
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-300">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-200">
           Cargando partidos...
         </div>
       ) : filteredMatches.length === 0 ? (
@@ -308,13 +308,13 @@ export function MatchesPage() {
             No hay partidos para esos filtros
           </h2>
 
-          <p className="mx-auto mt-3 max-w-xl text-slate-400">
+          <p className="mx-auto mt-3 max-w-xl text-slate-300">
             Probá limpiar los filtros o cambiar la búsqueda.
           </p>
 
           <button
             onClick={clearFilters}
-            className="mt-6 rounded-2xl bg-emerald-400 px-5 py-3 font-black text-slate-950 hover:bg-emerald-300"
+            className="mt-6 rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight"
           >
             Limpiar filtros
           </button>

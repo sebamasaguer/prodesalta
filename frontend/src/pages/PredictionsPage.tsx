@@ -105,7 +105,7 @@ function PredictionTeamBox({
   flagUrl: string | null;
 }) {
   return (
-    <div className="flex min-h-[92px] flex-1 items-center gap-4 rounded-2xl bg-slate-950/70 px-4 py-4">
+    <div className="flex min-h-[92px] flex-1 items-center gap-4 rounded-2xl bg-mundial-dark/70 px-4 py-4">
       <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5">
         {flagUrl ? (
           <img
@@ -115,7 +115,7 @@ function PredictionTeamBox({
             loading="lazy"
           />
         ) : (
-          <Flag className="text-slate-500" size={24} />
+          <Flag className="text-slate-400" size={24} />
         )}
       </div>
 
@@ -125,7 +125,7 @@ function PredictionTeamBox({
         </h3>
 
         {code && (
-          <p className="mt-1 text-sm font-bold text-slate-400">
+          <p className="mt-1 text-sm font-bold text-slate-300">
             {code}
           </p>
         )}
@@ -381,7 +381,7 @@ export function PredictionsPage() {
     <div>
       <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-300">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
             Pronósticos
           </p>
 
@@ -389,7 +389,7 @@ export function PredictionsPage() {
             Mis predicciones
           </h1>
 
-          <p className="mt-2 text-slate-400">
+          <p className="mt-2 text-slate-300">
             Cargá tus resultados por partido antes del cierre de predicción.
             Podés jugar en modo individual o dentro de un grupo.
           </p>
@@ -406,26 +406,26 @@ export function PredictionsPage() {
       </div>
 
       {errorMessage && (
-        <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 font-semibold text-red-200">
+        <div className="mb-6 rounded-2xl border border-mundial-red/30 bg-mundial-red/10 px-4 py-3 font-semibold text-red-100">
           {errorMessage}
         </div>
       )}
 
       {successMessage && (
-        <div className="mb-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 font-semibold text-emerald-200">
+        <div className="mb-6 rounded-2xl border border-mundial-green/30 bg-mundial-green/10 px-4 py-3 font-semibold text-mundial-greenSoft">
           {successMessage}
         </div>
       )}
 
       <div className="mb-6 rounded-3xl border border-white/10 bg-white/5 p-6">
-        <label className="mb-2 block text-sm font-bold text-slate-300">
+        <label className="mb-2 block text-sm font-bold text-slate-200">
           Modalidad de predicción
         </label>
 
         {isLoadingGroups ? (
-          <p className="text-slate-400">Cargando modalidades...</p>
+          <p className="text-slate-300">Cargando modalidades...</p>
         ) : groups.length === 0 ? (
-          <p className="text-slate-400">
+          <p className="text-slate-300">
             No tenés modalidades disponibles.
           </p>
         ) : (
@@ -433,7 +433,7 @@ export function PredictionsPage() {
             <select
               value={selectedGroupId || ""}
               onChange={(event) => setSelectedGroupId(Number(event.target.value))}
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400 md:max-w-md"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green md:max-w-md"
             >
               {groups.map((group) => (
                 <option key={group.id} value={group.id}>
@@ -445,9 +445,9 @@ export function PredictionsPage() {
             </select>
 
             {selectedGroupData && (
-              <p className="mt-3 text-sm text-slate-400">
+              <p className="mt-3 text-sm text-slate-300">
                 Modalidad seleccionada:{" "}
-                <span className="font-bold text-yellow-300">
+                <span className="font-bold text-red-100">
                   {selectedGroupData.is_personal
                     ? "Individual"
                     : selectedGroupData.name}
@@ -463,7 +463,7 @@ export function PredictionsPage() {
           <div>
             <h2 className="text-xl font-black">Filtros</h2>
 
-            <p className="mt-1 text-sm text-slate-400">
+            <p className="mt-1 text-sm text-slate-300">
               Mostrando {filteredItems.length} de {items.length} partidos.
             </p>
           </div>
@@ -472,7 +472,7 @@ export function PredictionsPage() {
             <button
               type="button"
               onClick={clearFilters}
-              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm font-bold text-red-200 hover:bg-red-500/20"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-mundial-red/20 bg-mundial-red/10 px-4 py-2 text-sm font-bold text-red-100 hover:bg-mundial-red/20"
             >
               <X size={16} />
               Limpiar filtros
@@ -482,31 +482,31 @@ export function PredictionsPage() {
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
           <div className="xl:col-span-2">
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Buscar
             </label>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 focus-within:border-emerald-400">
-              <Search size={18} className="text-slate-500" />
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 focus-within:border-mundial-green">
+              <Search size={18} className="text-slate-400" />
 
               <input
                 value={searchText}
                 onChange={(event) => setSearchText(event.target.value)}
                 placeholder="Argentina, México, Final..."
-                className="w-full bg-transparent text-white outline-none placeholder:text-slate-600"
+                className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Fase
             </label>
 
             <select
               value={selectedPhase}
               onChange={(event) => setSelectedPhase(event.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
             >
               {phaseOptions.map((option) => (
                 <option key={option.value || "all"} value={option.value}>
@@ -517,14 +517,14 @@ export function PredictionsPage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Grupo
             </label>
 
             <select
               value={selectedGroup}
               onChange={(event) => setSelectedGroup(event.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
             >
               {groupOptions.map((group) => (
                 <option key={group || "all"} value={group}>
@@ -535,14 +535,14 @@ export function PredictionsPage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Estado partido
             </label>
 
             <select
               value={selectedStatus}
               onChange={(event) => setSelectedStatus(event.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
             >
               {statusOptions.map((option) => (
                 <option key={option.value || "all"} value={option.value}>
@@ -553,7 +553,7 @@ export function PredictionsPage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Predicción
             </label>
 
@@ -562,7 +562,7 @@ export function PredictionsPage() {
               onChange={(event) =>
                 setSelectedPredictionStatus(event.target.value)
               }
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
             >
               {predictionStatusOptions.map((option) => (
                 <option key={option.value || "all"} value={option.value}>
@@ -573,7 +573,7 @@ export function PredictionsPage() {
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-bold text-slate-300">
+            <label className="mb-2 block text-sm font-bold text-slate-200">
               Fecha
             </label>
 
@@ -581,19 +581,19 @@ export function PredictionsPage() {
               type="date"
               value={selectedDate}
               onChange={(event) => setSelectedDate(event.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none focus:border-emerald-400"
+              className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-white outline-none focus:border-mundial-green"
             />
           </div>
         </div>
       </div>
 
       {isLoadingMatches ? (
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-300">
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-200">
           Cargando partidos...
         </div>
       ) : filteredItems.length === 0 ? (
         <div className="rounded-3xl border border-white/10 bg-white/5 p-10 text-center">
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-yellow-400/10 text-yellow-300">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-mundial-red/10 text-red-100">
             <Trophy size={34} />
           </div>
 
@@ -601,7 +601,7 @@ export function PredictionsPage() {
             No hay partidos para esos filtros
           </h2>
 
-          <p className="mx-auto mt-3 max-w-xl text-slate-400">
+          <p className="mx-auto mt-3 max-w-xl text-slate-300">
             Probá limpiar los filtros o cambiar la búsqueda.
           </p>
 
@@ -609,7 +609,7 @@ export function PredictionsPage() {
             <button
               type="button"
               onClick={clearFilters}
-              className="mt-6 rounded-2xl bg-emerald-400 px-5 py-3 font-black text-slate-950 hover:bg-emerald-300"
+              className="mt-6 rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight"
             >
               Limpiar filtros
             </button>
@@ -633,14 +633,14 @@ export function PredictionsPage() {
               >
                 <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-300">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
                       {phaseLabel(item.match.phase)}
                       {item.match.world_group
                         ? ` · Grupo ${item.match.world_group}`
                         : ""}
                     </p>
 
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p className="mt-1 text-sm text-slate-300">
                       {item.match.tournament?.name || "Mundial 2026"}
                     </p>
                   </div>
@@ -661,7 +661,7 @@ export function PredictionsPage() {
                     flagUrl={homeFlag(item.match)}
                   />
 
-                  <div className="text-center text-xl font-black text-slate-500">
+                  <div className="text-center text-xl font-black text-slate-400">
                     VS
                   </div>
 
@@ -672,12 +672,12 @@ export function PredictionsPage() {
                   />
                 </div>
 
-                <div className="mt-5 grid gap-3 text-sm text-slate-400 md:grid-cols-2">
-                  <div className="rounded-2xl bg-slate-950/60 px-4 py-3">
+                <div className="mt-5 grid gap-3 text-sm text-slate-300 md:grid-cols-2">
+                  <div className="rounded-2xl bg-mundial-dark/60 px-4 py-3">
                     Partido: {formatDateTime(item.match.match_datetime)}
                   </div>
 
-                  <div className="rounded-2xl bg-slate-950/60 px-4 py-3">
+                  <div className="rounded-2xl bg-mundial-dark/60 px-4 py-3">
                     Cierre: {formatDateTime(item.match.prediction_deadline)}
                   </div>
                 </div>
@@ -685,19 +685,19 @@ export function PredictionsPage() {
                 {item.match.status === "FINISHED" &&
                   item.match.home_score !== null &&
                   item.match.away_score !== null && (
-                    <div className="mt-5 rounded-2xl border border-yellow-400/20 bg-yellow-400/10 px-4 py-3 text-center">
-                      <p className="text-sm font-bold text-yellow-200">
+                    <div className="mt-5 rounded-2xl border border-mundial-red/20 bg-mundial-red/10 px-4 py-3 text-center">
+                      <p className="text-sm font-bold text-red-50">
                         Resultado final
                       </p>
 
-                      <p className="mt-1 text-3xl font-black text-yellow-300">
+                      <p className="mt-1 text-3xl font-black text-red-100">
                         {item.match.home_score} - {item.match.away_score}
                       </p>
                     </div>
                   )}
 
-                <div className="mt-5 rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                  <p className="mb-3 text-sm font-bold text-slate-300">
+                <div className="mt-5 rounded-2xl border border-white/10 bg-mundial-dark/60 p-4">
+                  <p className="mb-3 text-sm font-bold text-slate-200">
                     Tu predicción
                   </p>
 
@@ -710,10 +710,10 @@ export function PredictionsPage() {
                       onChange={(event) =>
                         updateDraft(item.match.id, "home", event.target.value)
                       }
-                      className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-center text-2xl font-black outline-none focus:border-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-center text-2xl font-black outline-none focus:border-mundial-green disabled:cursor-not-allowed disabled:opacity-50"
                     />
 
-                    <span className="text-center text-xl font-black text-slate-500">
+                    <span className="text-center text-xl font-black text-slate-400">
                       -
                     </span>
 
@@ -725,20 +725,20 @@ export function PredictionsPage() {
                       onChange={(event) =>
                         updateDraft(item.match.id, "away", event.target.value)
                       }
-                      className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-center text-2xl font-black outline-none focus:border-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="w-full rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 text-center text-2xl font-black outline-none focus:border-mundial-green disabled:cursor-not-allowed disabled:opacity-50"
                     />
                   </div>
 
                   {item.lock_reason && (
-                    <p className="mt-3 rounded-xl bg-yellow-400/10 px-3 py-2 text-sm font-semibold text-yellow-300">
+                    <p className="mt-3 rounded-xl bg-mundial-red/10 px-3 py-2 text-sm font-semibold text-red-100">
                       {item.lock_reason}
                     </p>
                   )}
 
                   {hasPrediction && (
-                    <p className="mt-3 text-sm text-slate-400">
+                    <p className="mt-3 text-sm text-slate-300">
                       Predicción guardada. Puntos actuales:{" "}
-                      <span className="font-black text-yellow-300">
+                      <span className="font-black text-red-100">
                         {item.prediction?.points}
                       </span>
                     </p>
@@ -747,7 +747,7 @@ export function PredictionsPage() {
                   <button
                     disabled={disabled}
                     onClick={() => handleSavePrediction(item)}
-                    className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-5 py-3 font-black text-slate-950 hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <Save size={18} />
                     {hasPrediction
