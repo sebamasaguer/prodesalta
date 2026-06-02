@@ -1,0 +1,78 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
+import { AppLayout } from "./layouts/AppLayout";
+
+import { AdminFixturePage } from "./pages/AdminFixturePage";
+import { AdminPage } from "./pages/AdminPage";
+import { AdminScoringPage } from "./pages/AdminScoringPage";
+import { AdminTeamsPage } from "./pages/AdminTeamsPage";
+import { AdminTournamentsPage } from "./pages/AdminTournamentsPage";
+import { CreateGroupPage } from "./pages/CreateGroupPage";
+import { DashboardPage } from "./pages/DashboardPage";
+import { GroupDetailPage } from "./pages/GroupDetailPage";
+import { GroupsPage } from "./pages/GroupsPage";
+import { JoinGroupPage } from "./pages/JoinGroupPage";
+import { LandingPage } from "./pages/LandingPage";
+import { LoginPage } from "./pages/LoginPage";
+import { MatchesPage } from "./pages/MatchesPage";
+import { PredictionsPage } from "./pages/PredictionsPage";
+import { RankingPage } from "./pages/RankingPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { StatsPage } from "./pages/StatsPage";
+import { AdminFixtureImportPage } from "./pages/AdminFixtureImportPage";
+import { RulesPage } from "./pages/RulesPage";
+import { TermsPage } from "./pages/TermsPage";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/terminos" element={<TermsPage />} />
+          <Route path="/reglamento" element={<RulesPage />} />
+
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/grupos" element={<GroupsPage />} />
+            <Route path="/grupos/nuevo" element={<CreateGroupPage />} />
+            <Route path="/grupos/unirse" element={<JoinGroupPage />} />
+            <Route path="/grupos/:groupId" element={<GroupDetailPage />} />
+            <Route path="/partidos" element={<MatchesPage />} />
+            <Route path="/predicciones" element={<PredictionsPage />} />
+            <Route path="/ranking" element={<RankingPage />} />
+            <Route path="/estadisticas" element={<StatsPage />} />
+          </Route>
+
+          <Route
+            element={
+              <ProtectedRoute allowedRoles={["ADMIN"]}>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/torneos" element={<AdminTournamentsPage />} />
+            <Route path="/admin/equipos" element={<AdminTeamsPage />} />
+            <Route path="/admin/fixture" element={<AdminFixturePage />} />
+            <Route path="/admin/importar-fixture" element={<AdminFixtureImportPage />} />
+            <Route path="/admin/puntajes" element={<AdminScoringPage />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
+
+export default App;
