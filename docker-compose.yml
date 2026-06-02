@@ -34,8 +34,8 @@ services:
         condition: service_healthy
     networks:
       - prode_network
-    ports:
-      - "${BACKEND_PORT:-8100}:8100"
+    expose:
+      - "8100"
 
   frontend:
     build:
@@ -46,8 +46,8 @@ services:
     restart: unless-stopped
     networks:
       - prode_network
-    ports:
-      - "${FRONTEND_PORT:-80}:80"
+    expose:
+      - "80"
     depends_on:
       - backend
 
