@@ -1,35 +1,58 @@
 services:
-  prode_postgres:
+  postgres:
     image: postgres:16
-    container_name: prode_mundial_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: prode_mundial_db
-      POSTGRES_USER: prode_user
-      POSTGRES_PASSWORD: prode_pass
-    ports:
-      - "5440:5432"
+      POSTGRES_DB: ${POSTGRES_DB:-prode_mundial_db}
+      POSTGRES_USER: ${POSTGRES_USER:-prode_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?La variable POSTGRES_PASSWORD es obligatoria}
     volumes:
-      - prode_postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - prode_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-prode_user} -d ${POSTGRES_DB:-prode_mundial_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  prode_pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: prode_mundial_pgadmin
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@prode.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
-    ports:
-      - "5080:80"
+      APP_NAME: ${APP_NAME:-Prode Mundial}
+      APP_ENV: ${APP_ENV:-production}
+      APP_DEBUG: ${APP_DEBUG:-false}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-prode_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-prode_mundial_db}
+      SECRET_KEY: ${SECRET_KEY:?La variable SECRET_KEY es obligatoria}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-1440}
+      BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS:?La variable BACKEND_CORS_ORIGINS es obligatoria}
     depends_on:
-      - prode_postgres
+      postgres:
+        condition: service_healthy
     networks:
       - prode_network
+    expose:
+      - "8100"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:?La variable VITE_API_URL es obligatoria}
+    restart: unless-stopped
+    networks:
+      - prode_network
+    expose:
+      - "80"
+    depends_on:
+      - backend
 
 volumes:
-  prode_postgres_data:
+  postgres_data:
 
 networks:
   prode_network:
