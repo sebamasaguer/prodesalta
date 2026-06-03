@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { Flag, RefreshCw, Save, Search, Trophy, X } from "lucide-react";
-import { getMyPersonalGroup, listMyGroups } from "../api/prodeGroups";
+import { Flag, Gift, Info, RefreshCw, Save, Search, Trophy, Users, X } from "lucide-react";
+import { getGroupDetail, getMyPersonalGroup, listMyGroups } from "../api/prodeGroups";
 import {
   listGroupMatchesWithPredictions,
   savePrediction,
 } from "../api/predictions";
-import type { ProdeGroup } from "../types/prodeGroup";
+import type { ProdeGroup, ProdeGroupDetail } from "../types/prodeGroup";
 import type { MatchPredictionStatus } from "../types/prediction";
 import {
   formatDateTime,
@@ -139,6 +139,7 @@ export function PredictionsPage() {
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [items, setItems] = useState<MatchPredictionStatus[]>([]);
   const [drafts, setDrafts] = useState<PredictionDraft>({});
+  const [selectedGroupDetail, setSelectedGroupDetail] = useState<ProdeGroupDetail | null>(null);
 
   const [searchText, setSearchText] = useState("");
   const [selectedPhase, setSelectedPhase] = useState("");
@@ -271,8 +272,13 @@ export function PredictionsPage() {
     setErrorMessage("");
 
     try {
-      const data = await listGroupMatchesWithPredictions(groupId);
+      const [data, groupDetail] = await Promise.all([
+        listGroupMatchesWithPredictions(groupId),
+        getGroupDetail(groupId),
+      ]);
+
       setItems(data);
+      setSelectedGroupDetail(groupDetail);
 
       const nextDrafts: PredictionDraft = {};
 
@@ -293,6 +299,7 @@ export function PredictionsPage() {
 
       setDrafts(nextDrafts);
     } catch (error: any) {
+      setSelectedGroupDetail(null);
       setErrorMessage(
         error?.response?.data?.detail ||
           "No se pudieron cargar los partidos del grupo",
@@ -445,14 +452,85 @@ export function PredictionsPage() {
             </select>
 
             {selectedGroupData && (
-              <p className="mt-3 text-sm text-slate-300">
-                Modalidad seleccionada:{" "}
-                <span className="font-bold text-red-100">
-                  {selectedGroupData.is_personal
-                    ? "Individual"
-                    : selectedGroupData.name}
-                </span>
-              </p>
+              <div className="mt-5 space-y-4">
+                <p className="text-sm text-slate-300">
+                  Modalidad seleccionada:{" "}
+                  <span className="font-bold text-red-100">
+                    {selectedGroupData.is_personal
+                      ? "Individual"
+                      : selectedGroupData.name}
+                  </span>
+                </p>
+
+                {selectedGroupDetail && !selectedGroupDetail.is_personal && (
+                  <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
+                    <div className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-5">
+                      <div className="mb-3 flex items-center gap-2 text-sm font-black uppercase tracking-[0.18em] text-mundial-greenSoft">
+                        <Info size={16} />
+                        Descripción del grupo
+                      </div>
+
+                      <h2 className="text-xl font-black text-white">
+                        {selectedGroupDetail.name}
+                      </h2>
+
+                      <p className="mt-2 text-sm leading-6 text-slate-300">
+                        {selectedGroupDetail.description ||
+                          "Este grupo todavía no tiene una descripción cargada."}
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap gap-3 text-xs font-bold text-slate-300">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-white/5 px-3 py-1">
+                          <Users size={14} />
+                          {selectedGroupDetail.members_count} participantes
+                        </span>
+                        <span className="rounded-full bg-white/5 px-3 py-1">
+                          Código: {selectedGroupDetail.invite_code}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-yellow-200/20 bg-yellow-200/10 p-5">
+                      <div className="mb-3 flex items-center gap-2 text-sm font-black uppercase tracking-[0.18em] text-yellow-200">
+                        <Gift size={16} />
+                        Premios del grupo
+                      </div>
+
+                      {selectedGroupDetail.prizes.length === 0 ? (
+                        <p className="text-sm leading-6 text-slate-300">
+                          Todavía no se cargaron premios para este grupo.
+                        </p>
+                      ) : (
+                        <div className="space-y-3">
+                          {selectedGroupDetail.prizes.map((prize) => (
+                            <div
+                              key={prize.id}
+                              className="rounded-xl border border-white/10 bg-mundial-dark/70 p-3"
+                            >
+                              <p className="text-xs font-black uppercase tracking-[0.16em] text-yellow-200">
+                                Puesto {prize.position_order}
+                              </p>
+                              <p className="mt-1 font-black text-white">
+                                {prize.title}
+                              </p>
+                              {prize.amount_label && (
+                                <p className="mt-1 text-sm font-bold text-mundial-greenSoft">
+                                  {prize.amount_label}
+                                </p>
+                              )}
+                              {prize.description && (
+                                <p className="mt-1 text-xs leading-5 text-slate-300">
+                                  {prize.description}
+                                </p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </>
         )}

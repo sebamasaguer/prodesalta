@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import {
   CalendarDays,
   FileSpreadsheet,
+  Megaphone,
   Shield,
   Target,
   Trophy,
@@ -44,6 +45,19 @@ export function AdminPage() {
           <h2 className="text-2xl font-black">Usuarios</h2>
           <p className="mt-2 text-sm leading-6 text-slate-300">
             Administrar roles, estado y verificación.
+          </p>
+        </Link>
+
+
+
+        <Link
+          to="/admin/sponsors"
+          className="rounded-3xl border border-white/10 bg-white/5 p-6 transition hover:-translate-y-1 hover:bg-white/10"
+        >
+          <Megaphone className="mb-5 text-mundial-gold" size={34} />
+          <h2 className="text-2xl font-black">Sponsors</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-300">
+            Cargar logos, teléfonos y visibilidad en landing.
           </p>
         </Link>
 

@@ -6,6 +6,7 @@ import { AppLayout } from "./layouts/AppLayout";
 import { AdminFixturePage } from "./pages/AdminFixturePage";
 import { AdminPage } from "./pages/AdminPage";
 import { AdminScoringPage } from "./pages/AdminScoringPage";
+import { AdminSponsorsPage } from "./pages/AdminSponsorsPage";
 import { AdminTeamsPage } from "./pages/AdminTeamsPage";
 import { AdminUsersPage } from "./pages/AdminUsersPage";
 import { AdminTournamentsPage } from "./pages/AdminTournamentsPage";
@@ -70,6 +71,7 @@ function App() {
             <Route path="/admin/fixture" element={<AdminFixturePage />} />
             <Route path="/admin/importar-fixture" element={<AdminFixtureImportPage />} />
             <Route path="/admin/puntajes" element={<AdminScoringPage />} />
+            <Route path="/admin/sponsors" element={<AdminSponsorsPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

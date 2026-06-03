@@ -2,6 +2,7 @@ from app.models.user import User, UserRole
 from app.models.email_verification import EmailVerificationLog, PendingEmailRegistration
 from app.models.prode_group import GroupMember, GroupMemberRole, ProdeGroup
 from app.models.group_prize import GroupPrize
+from app.models.sponsor import Sponsor
 from app.models.tournament import Tournament
 from app.models.team import Team
 from app.models.match import Match, MatchPhase, MatchStatus
@@ -17,6 +18,7 @@ __all__ = [
     "GroupMember",
     "GroupMemberRole",
     "GroupPrize",
+    "Sponsor",
     "Tournament",
     "Team",
     "Match",

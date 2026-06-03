@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { SiteFooter } from "../components/SiteFooter";
 
 const navItems = [
   {
@@ -71,9 +72,13 @@ export function AppLayout() {
         <Link
           to="/dashboard"
           onClick={closeMobileMenu}
-          className="flex h-12 w-12 items-center justify-center rounded-2xl bg-mundial-gold text-mundial-navy"
+          className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white p-1 shadow-mundial"
         >
-          <Trophy size={27} />
+          <img
+            src="/logosistema.jpeg"
+            alt="Prode Mundial"
+            className="h-full w-full object-contain"
+          />
         </Link>
 
         <div>
@@ -151,8 +156,12 @@ export function AppLayout() {
       <header className="safe-top sticky top-0 z-40 border-b border-white/10 bg-mundial-sidebar px-4 py-3 backdrop-blur-xl lg:hidden">
         <div className="flex items-center justify-between">
           <Link to="/dashboard" className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-mundial-gold text-mundial-navy">
-              <Trophy size={25} />
+            <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white p-1 shadow-mundial">
+              <img
+                src="/logosistema.jpeg"
+                alt="Prode Mundial"
+                className="h-full w-full object-contain"
+              />
             </div>
 
             <div>
@@ -205,6 +214,7 @@ export function AppLayout() {
           <Outlet />
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 }

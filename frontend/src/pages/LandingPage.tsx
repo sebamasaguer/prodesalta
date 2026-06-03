@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   CalendarDays,
@@ -11,6 +12,10 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
+import { SiteFooter } from "../components/SiteFooter";
+import { listPublicSponsors } from "../api/sponsors";
+import type { Sponsor } from "../types/sponsor";
+import { resolveAssetUrl } from "../utils/matchDisplay";
 
 const features = [
   {
@@ -53,6 +58,28 @@ const demoRanking = [
 ];
 
 export function LandingPage() {
+  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    listPublicSponsors()
+      .then((data) => {
+        if (mounted) {
+          setSponsors(data);
+        }
+      })
+      .catch(() => {
+        if (mounted) {
+          setSponsors([]);
+        }
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-mundial-light text-mundial-text">
       <Navbar />
@@ -66,9 +93,25 @@ export function LandingPage() {
 
           <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.03fr_0.97fr] lg:px-8 lg:py-24">
             <div className="flex flex-col justify-center">
-              <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-mundial-line bg-white px-4 py-2 text-sm font-black text-mundial-navy shadow-mundial">
-                <Sparkles size={16} className="text-mundial-gold" />
-                Prode online · Mundial FIFA 2026
+              <div className="mb-6 flex flex-col gap-5 sm:flex-row sm:items-center">
+                <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-[1.75rem] border border-mundial-line bg-white p-2 shadow-mundial">
+                  <img
+                    src="/logosistema.jpeg"
+                    alt="Logo Prode Mundial"
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+
+                <div>
+                  <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-mundial-line bg-white px-4 py-2 text-sm font-black text-mundial-navy shadow-mundial">
+                    <Sparkles size={16} className="text-mundial-gold" />
+                    Prode online · Mundial FIFA 2026
+                  </div>
+
+                  <p className="text-sm font-black uppercase tracking-[0.22em] text-mundial-green">
+                    Predicciones, grupos y ranking
+                  </p>
+                </div>
               </div>
 
               <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight text-mundial-navy sm:text-5xl lg:text-7xl">
@@ -395,6 +438,62 @@ export function LandingPage() {
           </div>
         </section>
 
+
+        {sponsors.length > 0 && (
+          <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+            <div className="rounded-[2rem] border border-mundial-line bg-white p-6 shadow-mundial md:p-8">
+              <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-red">
+                    Sponsors
+                  </p>
+                  <h2 className="mt-2 text-3xl font-black text-mundial-navy">
+                    Nuestros sponsors
+                  </h2>
+                  <p className="mt-2 max-w-2xl font-semibold text-mundial-muted">
+                    Empresas y organizaciones que acompañan el Prode Mundial 2026.
+                  </p>
+                </div>
+
+                <div className="rounded-full bg-mundial-gold px-4 py-2 text-sm font-black text-mundial-navy">
+                  Mundial 2026
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {sponsors.map((sponsor) => {
+                  const logoUrl = resolveAssetUrl(sponsor.logo_url);
+
+                  return (
+                    <div
+                      key={sponsor.id}
+                      className="group rounded-3xl border border-mundial-line bg-mundial-light p-5 text-center transition hover:-translate-y-1 hover:border-mundial-gold hover:bg-white hover:shadow-mundial"
+                    >
+                      <div className="mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-3xl border border-mundial-line bg-white p-3 shadow-sm">
+                        {logoUrl ? (
+                          <img
+                            src={logoUrl}
+                            alt={`Logo de ${sponsor.name}`}
+                            className="h-full w-full object-contain"
+                          />
+                        ) : (
+                          <span className="text-3xl font-black text-mundial-navy">
+                            {sponsor.name.slice(0, 1).toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 className="mt-4 text-lg font-black text-mundial-navy">
+                        {sponsor.name}
+                      </h3>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
+
         <section
           id="funciones"
           className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8"
@@ -499,6 +598,8 @@ export function LandingPage() {
           </div>
         </section>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }

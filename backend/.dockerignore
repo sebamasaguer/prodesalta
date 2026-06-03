@@ -1,0 +1,14 @@
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.env
+.env.local
+.env.server
+.env.production
+*.sqlite3
+*.db
+backups
+backups_db
+backups_code
+backups_estables

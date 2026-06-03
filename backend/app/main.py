@@ -14,6 +14,7 @@ from app.routers import (
     prode_groups,
     rankings,
     scoring_rules,
+    sponsors,
     stats,
     teams,
     tournaments,
@@ -57,6 +58,7 @@ app.include_router(teams.router, prefix="/api")
 app.include_router(matches.router, prefix="/api")
 app.include_router(predictions.router, prefix="/api")
 app.include_router(scoring_rules.router, prefix="/api")
+app.include_router(sponsors.router, prefix="/api")
 app.include_router(rankings.router, prefix="/api")
 app.include_router(stats.router, prefix="/api")
 app.include_router(fixture_import.router, prefix="/api")

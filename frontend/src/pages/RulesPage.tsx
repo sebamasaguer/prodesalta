@@ -101,9 +101,22 @@ export function RulesPage() {
                 Resultado oficial: Argentina 2 - 1 Francia.
               </p>
               <ul className="mt-3 list-disc space-y-2 pl-5">
-                <li>Predicción Argentina 2 - 1 Francia: 5 puntos.</li>
-                <li>Predicción Argentina 1 - 0 Francia: 3 puntos.</li>
-                <li>Predicción Argentina 1 - 1 Francia: 0 puntos.</li>
+                <li>
+                  Predicción Argentina 2 - 1 Francia: 5 puntos por resultado
+                  exacto.
+                </li>
+                <li>
+                  Predicción Argentina 1 - 0 Francia: 3 puntos por acertar
+                  ganador.
+                </li>
+                <li>
+                  Predicción Argentina 3 - 2 Francia: 2 puntos por acertar
+                  diferencia de gol.
+                </li>
+                <li>
+                  Predicción Argentina 1 - 1 Francia: 0 puntos por no acertar
+                  ganador, empate ni diferencia de gol.
+                </li>
               </ul>
             </section>
 

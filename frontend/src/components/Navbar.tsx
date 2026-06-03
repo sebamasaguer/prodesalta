@@ -1,21 +1,23 @@
-import { Trophy } from "lucide-react";
-
 export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-mundial-line/80 bg-white/90 backdrop-blur-xl">
       <div className="h-1.5 bg-mundial-stripe" />
 
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <a href="/" className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-mundial-navy text-mundial-gold shadow-mundial">
-            <Trophy size={25} />
+        <a href="/" className="flex items-center gap-4">
+          <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-mundial-line bg-white p-1 shadow-mundial sm:h-18 sm:w-18">
+            <img
+              src="/logosistema.jpeg"
+              alt="Prode Mundial"
+              className="h-full w-full object-contain"
+            />
           </div>
 
           <div>
-            <p className="text-lg font-black tracking-tight text-mundial-navy">
+            <p className="text-xl font-black tracking-tight text-mundial-navy">
               Prode Mundial
             </p>
-            <p className="text-xs font-bold text-mundial-muted">
+            <p className="text-sm font-bold text-mundial-muted">
               Mundial 2026 · Predicciones y ranking
             </p>
           </div>
