@@ -1,14 +1,26 @@
 # Guía de Deploy — Prode Mundial 2026 en Dokploy
 
-## Descripción del sistema
+## Arquitectura
 
-| Componente | Tecnología | Puerto |
-|---|---|---|
-| Frontend | React 19 + Vite + Tailwind CSS → Nginx | 80 |
-| Backend | FastAPI + SQLAlchemy + Alembic | 8100 |
-| Base de datos | PostgreSQL 16 | 5432 (interno) |
+```
+Internet
+   │
+   ▼
+Dokploy / Traefik  (HTTPS, dominio público)
+   │
+   ▼
+frontend:80  (Nginx — sirve la SPA React)
+   ├── GET /api/*  ──proxy interno──▶  backend:8000  (FastAPI / uvicorn)
+   └── GET /*      ──SPA fallback──▶  index.html
 
-El frontend es una SPA servida por Nginx. El backend expone la API REST en `/api/*` y la documentación en `/docs`. La base de datos es PostgreSQL y las migraciones se aplican automáticamente al iniciar el backend vía Alembic.
+Backend se conecta a PostgreSQL externo: 31.97.28.11:5433
+```
+
+| Servicio   | Imagen           | Puerto interno | Expuesto externamente |
+|------------|------------------|----------------|-----------------------|
+| frontend   | Nginx Alpine     | 80             | Sí (via Dokploy)      |
+| backend    | Python 3.12 slim | 8000           | No (proxy interno)    |
+| PostgreSQL | externo          | 5433           | No (conexión directa) |
 
 ---
 
@@ -16,166 +28,116 @@ El frontend es una SPA servida por Nginx. El backend expone la API REST en `/api
 
 - Servidor VPS con Ubuntu 22.04+ (mínimo 2 GB RAM, 20 GB disco)
 - Dokploy instalado ([dokploy.com/docs](https://dokploy.com/docs))
-- Dominio(s) apuntando al servidor (DNS configurado)
+- Dominio apuntando al servidor (DNS configurado)
 - Repositorio Git accesible desde Dokploy (GitHub / GitLab / Gitea)
 
-### Instalar Dokploy (si no está instalado)
-
 ```bash
+# Instalar Dokploy si no está instalado
 curl -sSL https://dokploy.com/install.sh | sh
 ```
 
-Accedé al panel en `http://<IP-del-servidor>:3000` y completá el registro inicial.
+Accedé al panel en `http://<IP-del-servidor>:3000`.
 
 ---
 
-## Variables de entorno requeridas
+## Variables de entorno
 
-Creá un archivo `.env.production` local (no lo subas al repo) como referencia:
+Estas variables se configuran en Dokploy (pestaña **Environment** del servicio).
 
 ```env
-# Base de datos
-POSTGRES_DB=prode_mundial_db
-POSTGRES_USER=prode_user
-POSTGRES_PASSWORD=<contraseña-segura>
-
-# Backend
-APP_NAME=Prode Mundial
-APP_ENV=production
-APP_DEBUG=false
-SECRET_KEY=<clave-secreta-larga-y-aleatoria>
+# --- Backend ---
+SECRET_KEY=<generá con: openssl rand -hex 32>
+BACKEND_CORS_ORIGINS=https://tu-dominio.com
+FRONTEND_BASE_URL=https://tu-dominio.com
 ACCESS_TOKEN_EXPIRE_MINUTES=1440
-BACKEND_CORS_ORIGINS=https://tu-dominio-frontend.com
-BACKEND_PORT=8100
 
-# Frontend (build arg — se embebe en el bundle de producción)
-VITE_API_URL=https://tu-dominio-backend.com/api
-FRONTEND_PORT=80
+# SMTP (opcional — si se deja vacío el backend imprime los links en consola)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=agenciasaltia@gmail.com
+SMTP_PASSWORD=gskg yadp erqo wvmy
+SMTP_FROM_EMAIL=no-reply@prodemundial.com
+SMTP_FROM_NAME=Prode Mundial
+SMTP_USE_TLS=true
+SMTP_USE_SSL=false
+
+# --- Frontend (build arg — se embebe en el bundle) ---
+VITE_API_URL=/api
 ```
 
-> **Importante:** `SECRET_KEY` debe ser una cadena larga y aleatoria. Generá una con:
-> ```bash
-> openssl rand -hex 32
-> ```
+> `DATABASE_URL` viene del archivo `backend/.env.server` que ya está en el repo y se carga automáticamente vía `env_file` en el compose.
+>
+> `VITE_API_URL=/api` es una ruta relativa: el Nginx del frontend hace el proxy interno al backend. No hace falta exponer el backend a internet.
 
 ---
 
-## Deploy con Docker Compose en Dokploy
+## Paso a paso en Dokploy
 
 ### Paso 1 — Crear proyecto
 
-1. En el panel de Dokploy, hacé clic en **"Create Project"**.
-2. Poné un nombre, p. ej. `prode-mundial`.
+1. Panel Dokploy → **"Create Project"**
+2. Nombre: `prode-mundial`
 
 ### Paso 2 — Agregar servicio Docker Compose
 
-1. Dentro del proyecto, clic en **"Create Service" → "Docker Compose"**.
-2. En **Source**, elegí **Git** y conectá tu repositorio.
-3. En **Branch** poné `main` (o la rama de producción que uses).
-4. En **Compose Path** dejá `docker-compose.yml` (está en la raíz del repo).
+1. Dentro del proyecto → **"Create Service" → "Docker Compose"**
+2. **Source:** Git → conectar repositorio
+3. **Branch:** `main`
+4. **Compose Path:** `docker-compose.yml` (está en la raíz)
+5. Guardar
 
 ### Paso 3 — Configurar variables de entorno
 
-1. Andá a la pestaña **"Environment"** del servicio.
-2. Ingresá todas las variables del bloque anterior, una por línea en formato `CLAVE=valor`.
-3. Guardá los cambios.
+1. Pestaña **"Environment"** del servicio
+2. Pegar el bloque de variables de arriba con los valores reales
+3. **Guardar**
 
-> `VITE_API_URL` es un **build argument** del frontend. Dokploy la pasa automáticamente al proceso `docker build` si la incluís en las variables de entorno del servicio.
+> Dokploy pasa automáticamente las variables al proceso `docker build`, por eso `VITE_API_URL` llega como build arg al Dockerfile del frontend.
 
-### Paso 4 — Configurar dominios
+### Paso 4 — Configurar dominio
 
-Dokploy usa Traefik como reverse proxy. Para cada servicio:
-
-#### Frontend
-1. En la sección **"Domains"** del servicio frontend, clic en **"Add Domain"**.
-2. Completá:
-   - **Host:** `tu-dominio-frontend.com`
+1. Pestaña **"Domains"** → **"Add Domain"**
+2. Completar:
+   - **Host:** `tu-dominio.com`
+   - **Service:** `frontend`
    - **Port:** `80`
-   - **HTTPS:** activá "Let's Encrypt" para certificado automático.
+   - **HTTPS:** activar "Let's Encrypt"
+3. Guardar
 
-#### Backend
-1. Repetí el proceso para el backend.
-2. Completá:
-   - **Host:** `api.tu-dominio.com` (o el subdominio que uses)
-   - **Port:** `8100`
-   - **HTTPS:** activá "Let's Encrypt".
-
-> Recordá que el dominio del backend debe coincidir exactamente con el valor de `VITE_API_URL` y `BACKEND_CORS_ORIGINS`.
+> El backend **no necesita dominio propio**. Todo el tráfico entra por el frontend (puerto 80) y Nginx redirige `/api/*` internamente al backend.
 
 ### Paso 5 — Primer deploy
 
-1. Andá a la pestaña **"Deployments"**.
-2. Clic en **"Deploy"**.
-3. Dokploy clona el repo, ejecuta `docker compose build` y luego `docker compose up -d`.
-4. Podés ver los logs en tiempo real desde el panel.
+1. Pestaña **"Deployments"** → **"Deploy"**
+2. Dokploy clona el repo, ejecuta `docker compose build` y luego `docker compose up -d`
+3. Orden de inicio: backend (healthcheck en `/api/health`) → frontend (espera al backend)
+4. Seguir logs en tiempo real desde el panel
 
-El orden de inicio es:
-1. `postgres` (con healthcheck)
-2. `backend` (espera a que Postgres esté saludable, luego ejecuta `alembic upgrade head`)
-3. `frontend`
-
-### Paso 6 — Verificar el deploy
+### Paso 6 — Verificar
 
 ```bash
-# Health check del backend
-curl https://api.tu-dominio.com/api/health
+# Health check del backend (a través del proxy nginx)
+curl https://tu-dominio.com/api/health
 
-# Documentación interactiva
-# Abrí en el navegador: https://api.tu-dominio.com/docs
-```
-
----
-
-## Deploy manual (sin Dokploy)
-
-Si querés correr el stack en cualquier servidor con Docker:
-
-```bash
-# Clonar el repositorio
-git clone <url-del-repo> prodesalta
-cd prodesalta
-
-# Crear el archivo .env con tus valores reales
-cp .env.example .env   # editá el archivo con tus valores
-
-# Construir y levantar todos los servicios
-docker compose up -d --build
-
-# Ver logs
-docker compose logs -f
-
-# Detener
-docker compose down
+# Documentación interactiva de la API
+# Abrir en el navegador: https://tu-dominio.com/api/docs
 ```
 
 ---
 
 ## Tareas post-deploy
 
-### Crear usuario administrador
-
 ```bash
-# Ejecutar script de creación de admin dentro del contenedor backend
-docker compose exec backend python -m app.scripts.create_admin
-```
-
-### Cargar datos iniciales del Mundial 2026
-
-```bash
-# Equipos, grupos y fixture base
-docker compose exec backend python -m app.scripts.reset_and_seed_worldcup_2026
-
-# Reglas de puntuación
-docker compose exec backend python -m app.scripts.seed_scoring_rules
-
-# Imágenes de banderas
-docker compose exec backend python -m app.scripts.seed_team_flags
-```
-
-### Correr migraciones manualmente
-
-```bash
+# Correr migraciones (Alembic) — necesario en el primer deploy
 docker compose exec backend alembic upgrade head
+
+# Crear usuario administrador
+docker compose exec backend python -m app.scripts.create_admin
+
+# Cargar datos iniciales del Mundial 2026
+docker compose exec backend python -m app.scripts.reset_and_seed_worldcup_2026
+docker compose exec backend python -m app.scripts.seed_scoring_rules
+docker compose exec backend python -m app.scripts.seed_team_flags
 ```
 
 ---
@@ -184,58 +146,37 @@ docker compose exec backend alembic upgrade head
 
 Dokploy soporta **auto-deploy por webhook**:
 
-1. En la pestaña **"Deployments"** copiá la URL del webhook.
-2. En GitHub/GitLab, configurá un webhook apuntando a esa URL.
-3. Cada `push` a `main` disparará un nuevo deploy automáticamente.
+1. Pestaña **"Deployments"** → copiar URL del webhook
+2. En GitHub/GitLab configurar webhook apuntando a esa URL
+3. Cada `push` a `main` dispara un nuevo deploy automáticamente
 
-Para deploy manual:
-- En el panel de Dokploy → **"Deploy"** en la pestaña Deployments.
+Para deploy manual: panel Dokploy → **"Deploy"** en la pestaña Deployments.
 
 ---
 
 ## Solución de problemas
 
 | Síntoma | Causa probable | Solución |
-|---|---|---|
-| Backend no inicia | Postgres no responde aún | Esperá el healthcheck; revisá logs de postgres |
-| Error de migración | Schema inconsistente | `docker compose exec backend alembic stamp head` |
-| Frontend muestra error 404 en rutas | Nginx sin fallback SPA | Verificá que `nginx.conf` esté copiado correctamente |
-| CORS bloqueado | `BACKEND_CORS_ORIGINS` incorrecto | Actualizá la variable con la URL exacta del frontend |
-| `VITE_API_URL` incorrecto en producción | Build arg no seteado | Verificá que la variable esté en Dokploy antes de buildear |
+|---------|----------------|----------|
+| Backend no inicia | No puede conectar a la DB externa | Verificar que `DATABASE_URL` en `backend/.env.server` sea correcta y que el puerto 5433 sea accesible desde el servidor |
+| Frontend devuelve 502 en `/api/*` | Backend no levantó o healthcheck fallando | Revisar logs del servicio backend en Dokploy |
+| CORS bloqueado en el navegador | `BACKEND_CORS_ORIGINS` incorrecto | Actualizar con la URL exacta del dominio (sin trailing slash) |
+| `VITE_API_URL` apunta al lugar incorrecto | Variable no seteada antes del build | Verificar que esté en Environment antes de hacer deploy y rebuildear |
+| Rutas de la SPA devuelven 404 | Nginx sin fallback SPA | Verificar que `nginx.conf` tenga `try_files $uri $uri/ /index.html` |
+| Error de migración Alembic | Schema inconsistente | `docker compose exec backend alembic stamp head` y volver a correr `upgrade head` |
 
 ---
 
-## Estructura de archivos Docker
+## Estructura de archivos relevantes
 
 ```
 prodesalta/
 ├── backend/
-│   └── Dockerfile          ← imagen Python 3.12 + uvicorn
+│   ├── Dockerfile          ← Python 3.12 slim + uvicorn (puerto 8000 interno)
+│   └── .env.server         ← DATABASE_URL y configuración base de producción
 ├── frontend/
-│   ├── Dockerfile          ← build Node 20 → Nginx
-│   └── nginx.conf          ← configuración Nginx con SPA fallback
-├── docker-compose.yml      ← orquestación completa (postgres + backend + frontend)
+│   ├── Dockerfile          ← build Node 22 → Nginx Alpine (acepta ARG VITE_API_URL)
+│   └── nginx.conf          ← SPA fallback + proxy /api/ → backend:8000
+├── docker-compose.yml      ← orquestación: backend + frontend (sin postgres local)
 └── requirements.txt        ← dependencias Python del backend
 ```
-APP_NAME=Prode Mundial
-DATABASE_URL=postgresql+psycopg://saltiadb:asdf3456@31.97.28.11:5433/prode
-  POSTGRES_HOST=31.97.28.11
-  POSTGRES_PASSWORD=asdf3456
-  POSTGRES_USER=saltiadb
-  POSTGRES_DB=prode
-  POSTGRES_PORT=5433
-SECRET_KEY=genera-una-con-openssl-rand-hex-32
-BACKEND_CORS_ORIGINS=https://prode-api.saltia.com.ar
-VITE_API_URL=https://prode-api.saltia.com.ar:8100/api
-APP_ENV=production
-APP_DEBUG=false
-#VITE_API_URL=http://127.0.0.1:8100/api
-ACCESS_TOKEN_EXPIRE_MINUTES=1440
-SMTP_HOST=
-SMTP_PORT=587
-SMTP_USERNAME=agenciasaltia@gmail.com
-SMTP_PASSWORD=gskg yadp erqo wvmy
-SMTP_FROM_EMAIL=no-reply@prodemundial.local
-SMTP_FROM_NAME=Prode Mundial
-SMTP_USE_TLS=true
-SMTP_USE_SSL=false
