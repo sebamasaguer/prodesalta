@@ -217,3 +217,25 @@ prodesalta/
 ├── docker-compose.yml      ← orquestación completa (postgres + backend + frontend)
 └── requirements.txt        ← dependencias Python del backend
 ```
+APP_NAME=Prode Mundial
+DATABASE_URL=postgresql+psycopg://saltiadb:asdf3456@31.97.28.11:5433/prode
+  POSTGRES_HOST=31.97.28.11
+  POSTGRES_PASSWORD=asdf3456
+  POSTGRES_USER=saltiadb
+  POSTGRES_DB=prode
+  POSTGRES_PORT=5433
+SECRET_KEY=genera-una-con-openssl-rand-hex-32
+BACKEND_CORS_ORIGINS=https://prode-api.saltia.com.ar
+VITE_API_URL=https://prode-api.saltia.com.ar:8100/api
+APP_ENV=production
+APP_DEBUG=false
+#VITE_API_URL=http://127.0.0.1:8100/api
+ACCESS_TOKEN_EXPIRE_MINUTES=1440
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USERNAME=agenciasaltia@gmail.com
+SMTP_PASSWORD=gskg yadp erqo wvmy
+SMTP_FROM_EMAIL=no-reply@prodemundial.local
+SMTP_FROM_NAME=Prode Mundial
+SMTP_USE_TLS=true
+SMTP_USE_SSL=false
