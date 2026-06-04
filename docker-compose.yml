@@ -22,6 +22,8 @@ services:
       SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Prode Mundial}
       SMTP_USE_TLS: ${SMTP_USE_TLS:-true}
       SMTP_USE_SSL: ${SMTP_USE_SSL:-false}
+    volumes:
+      - uploads_data:/app/backend/app/static/uploads
     networks:
       - app-network
     healthcheck:
@@ -47,3 +49,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  uploads_data:
