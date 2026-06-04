@@ -1,5 +1,6 @@
 import { api } from "./client";
 import type {
+  GroupMemberPrediction,
   GroupPrediction,
   MatchPredictionStatus,
   Prediction,
@@ -51,6 +52,17 @@ export async function listGroupMatchesWithPredictions(
 ): Promise<MatchPredictionStatus[]> {
   const response = await api.get<MatchPredictionStatus[]>(
     `/predictions/group/${groupId}/matches`,
+  );
+
+  return response.data;
+}
+
+
+export async function listGroupMemberPredictions(
+  groupId: number,
+): Promise<GroupMemberPrediction[]> {
+  const response = await api.get<GroupMemberPrediction[]>(
+    `/predictions/group/${groupId}/members-predictions`,
   );
 
   return response.data;

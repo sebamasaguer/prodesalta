@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Trophy } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export function RegisterPage() {
@@ -70,13 +70,13 @@ export function RegisterPage() {
 
         <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl sm:p-8">
           <div className="mb-8 flex flex-col items-center text-center">
-            <Link
-              to="/"
-              title="Volver al inicio"
-              className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-mundial-red text-mundial-dark transition hover:bg-mundial-redLight"
-            >
-              <Trophy size={28} />
-            </Link>
+            <div className="mx-auto mb-6 flex justify-center">
+              <img
+                src="/logosistema.jpeg"
+                alt="Prode Mundial"
+                className="h-auto w-40 object-contain sm:w-44"
+              />
+            </div>
 
             <h1 className="text-3xl font-black">Crear cuenta</h1>
 

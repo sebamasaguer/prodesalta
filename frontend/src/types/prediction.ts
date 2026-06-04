@@ -53,3 +53,28 @@ export interface GroupPrediction extends PredictionSimple {
   match: Match;
   user: User;
 }
+
+export interface GroupMemberPrediction {
+  id: number;
+
+  user_id: number;
+  username: string;
+  full_name: string | null;
+
+  match_id: number;
+  phase: string | null;
+  home_team_name: string;
+  away_team_name: string;
+
+  predicted_home_score: number;
+  predicted_away_score: number;
+
+  actual_home_score: number | null;
+  actual_away_score: number | null;
+
+  points: number;
+  is_locked: boolean;
+
+  created_at: string;
+  updated_at: string;
+}

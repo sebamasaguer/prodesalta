@@ -5,7 +5,7 @@ export function Navbar() {
 
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <a href="/" className="flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-mundial-line bg-white p-1 shadow-mundial sm:h-18 sm:w-18">
+          <div className="flex h-24 w-36 items-center justify-center overflow-hidden rounded-3xl border border-mundial-line bg-white p-2 shadow-mundial sm:h-28 sm:w-44">
             <img
               src="/logosistema.jpeg"
               alt="Prode Mundial"

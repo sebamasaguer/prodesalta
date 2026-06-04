@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { CheckCircle2, Loader2, Trophy, XCircle } from "lucide-react";
+import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export function VerifyEmailPage() {
@@ -51,12 +51,13 @@ export function VerifyEmailPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-mundial-dark px-4 py-6 text-white sm:py-10">
       <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-8 text-center shadow-2xl">
-        <Link
-          to="/"
-          className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-mundial-gold text-mundial-navy"
-        >
-          <Trophy size={32} />
-        </Link>
+        <div className="mx-auto mb-6 flex justify-center">
+          <img
+            src="/logosistema.jpeg"
+            alt="Prode Mundial"
+            className="h-auto w-40 object-contain sm:w-44"
+          />
+        </div>
 
         {status === "loading" && (
           <Loader2 className="mx-auto mb-4 animate-spin text-mundial-gold" size={42} />

@@ -152,6 +152,8 @@ export function PredictionsPage() {
   const [isLoadingMatches, setIsLoadingMatches] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [savingMatchId, setSavingMatchId] = useState<number | null>(null);
+  const [savedMatchId, setSavedMatchId] = useState<number | null>(null);
 
   const selectedGroupData = useMemo(() => {
     return groups.find((group) => group.id === selectedGroupId) || null;
@@ -239,6 +241,22 @@ export function PredictionsPage() {
     selectedStatus ||
     selectedDate ||
     selectedPredictionStatus;
+
+  const totalMatches = items.length;
+  const savedPredictionsCount = items.filter((item) => item.prediction).length;
+  const pendingPredictionsCount = items.filter((item) => {
+    const isClosed =
+      item.can_predict === false ||
+      item.prediction?.is_locked === true ||
+      item.match.status === "FINISHED" ||
+      item.match.status === "CLOSED" ||
+      item.match.status === "CANCELLED";
+
+    return !item.prediction && !isClosed;
+  }).length;
+
+  const progressPercentage =
+    totalMatches > 0 ? Math.round((savedPredictionsCount / totalMatches) * 100) : 0;
 
   async function loadGroups() {
     setIsLoadingGroups(true);
@@ -330,7 +348,7 @@ export function PredictionsPage() {
   }
 
   async function handleSavePrediction(item: MatchPredictionStatus) {
-    if (!selectedGroupId) return;
+    if (!selectedGroupId || savingMatchId === item.match.id) return;
 
     const draft = drafts[item.match.id];
 
@@ -352,25 +370,62 @@ export function PredictionsPage() {
       return;
     }
 
+    const currentScrollY = window.scrollY;
+
     setErrorMessage("");
     setSuccessMessage("");
+    setSavingMatchId(item.match.id);
+    setSavedMatchId(null);
 
     try {
-      await savePrediction({
+      const savedPrediction = await savePrediction({
         group_id: selectedGroupId,
         match_id: item.match.id,
         home_score_predicted: homeScore,
         away_score_predicted: awayScore,
       });
 
-      setSuccessMessage("Predicción guardada correctamente");
-      await loadMatchesForGroup(selectedGroupId);
+      setItems((currentItems) =>
+        currentItems.map((currentItem) =>
+          currentItem.match.id === item.match.id
+            ? {
+                ...currentItem,
+                prediction: savedPrediction,
+              }
+            : currentItem,
+        ),
+      );
 
-      setTimeout(() => setSuccessMessage(""), 2500);
+      setDrafts((currentDrafts) => ({
+        ...currentDrafts,
+        [item.match.id]: {
+          home: String(homeScore),
+          away: String(awayScore),
+        },
+      }));
+
+      setSavedMatchId(item.match.id);
+      setSuccessMessage("Predicción guardada correctamente");
+
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: currentScrollY,
+          behavior: "auto",
+        });
+      });
+
+      setTimeout(() => {
+        setSuccessMessage("");
+        setSavedMatchId((current) =>
+          current === item.match.id ? null : current,
+        );
+      }, 2200);
     } catch (error: any) {
       setErrorMessage(
         error?.response?.data?.detail || "No se pudo guardar la predicción",
       );
+    } finally {
+      setSavingMatchId(null);
     }
   }
 
@@ -534,6 +589,77 @@ export function PredictionsPage() {
             )}
           </>
         )}
+      </div>
+
+      <div className="sticky top-24 z-30 mb-6 rounded-3xl border border-white/10 bg-mundial-dark/95 p-5 shadow-xl backdrop-blur-xl">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
+              Avance de carga
+            </p>
+
+            <h2 className="mt-1 text-2xl font-black text-white">
+              {savedPredictionsCount}/{totalMatches} predicciones cargadas
+            </h2>
+
+            <p className="mt-1 text-sm text-slate-300">
+              Pendientes editables: {pendingPredictionsCount}. Filtro actual:{" "}
+              {filteredItems.length} partidos visibles.
+            </p>
+          </div>
+
+          <div className="min-w-0 flex-1 lg:max-w-md">
+            <div className="mb-2 flex items-center justify-between text-xs font-black uppercase tracking-[0.16em] text-slate-300">
+              <span>Progreso</span>
+              <span>{progressPercentage}%</span>
+            </div>
+
+            <div className="h-3 overflow-hidden rounded-full bg-white/10">
+              <div
+                className="h-full rounded-full bg-mundial-green transition-all"
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setSelectedPredictionStatus("")}
+              className={`rounded-2xl px-4 py-2 text-sm font-black transition ${
+                selectedPredictionStatus === ""
+                  ? "bg-white text-mundial-dark"
+                  : "bg-white/10 text-white hover:bg-white/15"
+              }`}
+            >
+              Todos
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSelectedPredictionStatus("pending")}
+              className={`rounded-2xl px-4 py-2 text-sm font-black transition ${
+                selectedPredictionStatus === "pending"
+                  ? "bg-mundial-red text-white"
+                  : "bg-mundial-red/10 text-red-100 hover:bg-mundial-red/20"
+              }`}
+            >
+              Pendientes
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSelectedPredictionStatus("saved")}
+              className={`rounded-2xl px-4 py-2 text-sm font-black transition ${
+                selectedPredictionStatus === "saved"
+                  ? "bg-mundial-green text-mundial-dark"
+                  : "bg-mundial-green/10 text-mundial-greenSoft hover:bg-mundial-green/20"
+              }`}
+            >
+              Cargadas
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="mb-6 rounded-3xl border border-white/10 bg-white/5 p-5 shadow-xl">
@@ -703,6 +829,8 @@ export function PredictionsPage() {
 
             const hasPrediction = Boolean(item.prediction);
             const disabled = !item.can_predict;
+            const isSavingThisMatch = savingMatchId === item.match.id;
+            const wasSavedThisMatch = savedMatchId === item.match.id;
 
             return (
               <div
@@ -813,7 +941,13 @@ export function PredictionsPage() {
                     </p>
                   )}
 
-                  {hasPrediction && (
+                  {wasSavedThisMatch && (
+                    <p className="mt-3 rounded-xl border border-mundial-green/30 bg-mundial-green/10 px-3 py-2 text-sm font-black text-mundial-greenSoft">
+                      Predicción guardada. Seguís en el mismo partido para continuar cargando.
+                    </p>
+                  )}
+
+                  {hasPrediction && !wasSavedThisMatch && (
                     <p className="mt-3 text-sm text-slate-300">
                       Predicción guardada. Puntos actuales:{" "}
                       <span className="font-black text-red-100">
@@ -823,14 +957,21 @@ export function PredictionsPage() {
                   )}
 
                   <button
-                    disabled={disabled}
+                    disabled={disabled || isSavingThisMatch}
                     onClick={() => handleSavePrediction(item)}
                     className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-mundial-green px-5 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    <Save size={18} />
-                    {hasPrediction
-                      ? "Actualizar predicción"
-                      : "Guardar predicción"}
+                    {isSavingThisMatch ? (
+                      <RefreshCw size={18} className="animate-spin" />
+                    ) : (
+                      <Save size={18} />
+                    )}
+
+                    {isSavingThisMatch
+                      ? "Guardando..."
+                      : hasPrediction
+                        ? "Actualizar predicción"
+                        : "Guardar predicción"}
                   </button>
                 </div>
               </div>

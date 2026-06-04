@@ -72,6 +72,32 @@ class GroupPredictionsRead(BaseModel):
     group: ProdeGroupRead
     items: list[MatchPredictionStatus]
 
+
 class GroupPredictionRead(PredictionSimpleRead):
     match: MatchRead
     user: UserRead
+
+
+class GroupMemberPredictionRead(BaseModel):
+    id: int
+
+    user_id: int
+    username: str
+    full_name: str | None = None
+
+    match_id: int
+    phase: str | None = None
+    home_team_name: str
+    away_team_name: str
+
+    predicted_home_score: int
+    predicted_away_score: int
+
+    actual_home_score: int | None = None
+    actual_away_score: int | None = None
+
+    points: int
+    is_locked: bool
+
+    created_at: datetime
+    updated_at: datetime

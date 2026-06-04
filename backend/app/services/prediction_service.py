@@ -278,3 +278,112 @@ def lock_expired_predictions(db: Session) -> int:
     db.commit()
 
     return locked_count
+
+def _enum_to_value(value) -> str | None:
+    if value is None:
+        return None
+
+    return getattr(value, "value", str(value))
+
+
+def _user_full_name(user: User) -> str | None:
+    first_name = (getattr(user, "first_name", "") or "").strip()
+    last_name = (getattr(user, "last_name", "") or "").strip()
+    full_name = f"{first_name} {last_name}".strip()
+
+    return full_name or None
+
+
+def _match_team_name(match: Match, side: str) -> str:
+    team_attr = "home_team" if side == "home" else "away_team"
+    placeholder_candidates = (
+        ("home_placeholder", "home_team_placeholder", "home_text", "home_name")
+        if side == "home"
+        else ("away_placeholder", "away_team_placeholder", "away_text", "away_name")
+    )
+
+    team = getattr(match, team_attr, None)
+
+    if team:
+        name = getattr(team, "name", None)
+        if name:
+            return name
+
+    for attr in placeholder_candidates:
+        value = getattr(match, attr, None)
+        if value:
+            return str(value)
+
+    return "Equipo local" if side == "home" else "Equipo visitante"
+
+
+def _match_score(match: Match, side: str) -> int | None:
+    candidates = (
+        ("home_score", "home_goals", "home_result", "home_score_final")
+        if side == "home"
+        else ("away_score", "away_goals", "away_result", "away_score_final")
+    )
+
+    for attr in candidates:
+        value = getattr(match, attr, None)
+        if value is not None:
+            return int(value)
+
+    return None
+
+
+def list_group_member_predictions_detail(
+    db: Session,
+    group_id: int,
+    current_user: User,
+) -> list[dict]:
+    validate_group_access(db, group_id, current_user)
+
+    stmt = (
+        select(Prediction)
+        .join(User, User.id == Prediction.user_id)
+        .join(Match, Match.id == Prediction.match_id)
+        .options(
+            joinedload(Prediction.user),
+            joinedload(Prediction.match).joinedload(Match.home_team),
+            joinedload(Prediction.match).joinedload(Match.away_team),
+            joinedload(Prediction.match).joinedload(Match.tournament),
+        )
+        .where(Prediction.group_id == group_id)
+        .order_by(
+            User.username.asc(),
+            Match.id.asc(),
+            Prediction.created_at.asc(),
+        )
+    )
+
+    predictions = list(db.execute(stmt).scalars().all())
+    result: list[dict] = []
+
+    for prediction in predictions:
+        user = prediction.user
+        match = prediction.match
+
+        result.append(
+            {
+                "id": prediction.id,
+                "user_id": user.id,
+                "username": user.username,
+                "full_name": _user_full_name(user),
+                "match_id": match.id,
+                "phase": _enum_to_value(getattr(match, "phase", None)),
+                "home_team_name": _match_team_name(match, "home"),
+                "away_team_name": _match_team_name(match, "away"),
+                "predicted_home_score": prediction.home_score_predicted,
+                "predicted_away_score": prediction.away_score_predicted,
+                "actual_home_score": _match_score(match, "home"),
+                "actual_away_score": _match_score(match, "away"),
+                "points": prediction.points,
+                "is_locked": prediction.is_locked,
+                "created_at": prediction.created_at,
+                "updated_at": prediction.updated_at,
+            }
+        )
+
+    return result
+

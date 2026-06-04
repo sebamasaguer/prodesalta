@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 
 from app.core.deps import CurrentUser, DbSession
 from app.schemas.prediction import (
+    GroupMemberPredictionRead,
     GroupPredictionRead,
     MatchPredictionStatus,
     PredictionCreate,
@@ -17,6 +18,7 @@ from app.services.prediction_service import (
     get_match_lock_reason,
     get_prediction_by_id,
     get_prediction_for_user_match_group,
+    list_group_member_predictions_detail,
     list_group_predictions,
     list_user_predictions,
     lock_expired_predictions,
@@ -112,6 +114,18 @@ def group_matches_with_predictions(
         )
 
     return items
+
+
+@router.get(
+    "/group/{group_id}/members-predictions",
+    response_model=list[GroupMemberPredictionRead],
+)
+def group_members_predictions(
+    group_id: int,
+    db: DbSession,
+    current_user: CurrentUser,
+):
+    return list_group_member_predictions_detail(db, group_id, current_user)
 
 
 @router.get("/group/{group_id}/all", response_model=list[GroupPredictionRead])

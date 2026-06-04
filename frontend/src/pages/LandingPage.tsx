@@ -57,6 +57,14 @@ const demoRanking = [
   { pos: 4, name: "Martín", points: 37, exact: 3 },
 ];
 
+function resolveSponsorLogo(url?: string | null): string {
+  return resolveAssetUrl(url) || "/logosistema.jpeg";
+}
+
+function handleSponsorLogoError(event: React.SyntheticEvent<HTMLImageElement>) {
+  event.currentTarget.src = "/logosistema.jpeg";
+}
+
 export function LandingPage() {
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
 
@@ -92,26 +100,10 @@ export function LandingPage() {
           <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-mundial-green/20 blur-3xl" />
 
           <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.03fr_0.97fr] lg:px-8 lg:py-24">
-            
             <div className="flex flex-col justify-center">
-              <div className="mb-8 w-full overflow-hidden rounded-[2rem] border border-mundial-line bg-white p-4 shadow-mundial">
-                <img
-                  src="/logosistema.jpeg"
-                  alt="Logo Prode Mundial"
-                  className="h-full w-full object-contain"
-                />
-              </div>
-              <div className="mb-6 flex flex-col gap-5 sm:flex-row sm:items-center">
-                <div>
-                  <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-mundial-line bg-white px-4 py-2 text-sm font-black text-mundial-navy shadow-mundial">
-                    <Sparkles size={16} className="text-mundial-gold" />
-                    Prode online · Mundial FIFA 2026
-                  </div>
-
-                  <p className="text-sm font-black uppercase tracking-[0.22em] text-mundial-green">
-                    Predicciones, grupos y ranking
-                  </p>
-                </div>
+              <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-mundial-line bg-white px-4 py-2 text-sm font-black text-mundial-navy shadow-mundial">
+                <Sparkles size={16} className="text-mundial-gold" />
+                Prode online · Mundial FIFA 2026
               </div>
 
               <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight text-mundial-navy sm:text-5xl lg:text-7xl">
@@ -462,25 +454,22 @@ export function LandingPage() {
 
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {sponsors.map((sponsor) => {
-                  const logoUrl = resolveAssetUrl(sponsor.logo_url);
+                  const logoUrl = resolveSponsorLogo(sponsor.logo_url);
 
                   return (
                     <div
                       key={sponsor.id}
                       className="group rounded-3xl border border-mundial-line bg-mundial-light p-5 text-center transition hover:-translate-y-1 hover:border-mundial-gold hover:bg-white hover:shadow-mundial"
                     >
-                      <div className="mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-3xl border border-mundial-line bg-white p-3 shadow-sm">
-                        {logoUrl ? (
-                          <img
-                            src={logoUrl}
-                            alt={`Logo de ${sponsor.name}`}
-                            className="h-full w-full object-contain"
-                          />
-                        ) : (
-                          <span className="text-3xl font-black text-mundial-navy">
-                            {sponsor.name.slice(0, 1).toUpperCase()}
-                          </span>
-                        )}
+                      <div className="mx-auto flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl border border-mundial-line bg-white p-3 shadow-sm">
+                        <img
+                          src={logoUrl}
+                          alt={`Logo de ${sponsor.name}`}
+                          className="max-h-full max-w-full object-contain"
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                          onError={handleSponsorLogoError}
+                        />
                       </div>
 
                       <h3 className="mt-4 text-lg font-black text-mundial-navy">

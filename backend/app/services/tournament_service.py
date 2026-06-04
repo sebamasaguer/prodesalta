@@ -45,11 +45,11 @@ def update_tournament(
 ) -> Tournament:
     update_data = data.model_dump(exclude_unset=True)
 
-    if "name" in update_data and update_data["name"]:
+    if "name" in update_data and isinstance(update_data["name"], str):
         update_data["name"] = update_data["name"].strip()
 
-    if "description" in update_data and update_data["description"]:
-        update_data["description"] = update_data["description"].strip()
+    if "description" in update_data and isinstance(update_data["description"], str):
+        update_data["description"] = update_data["description"].strip() or None
 
     for field, value in update_data.items():
         setattr(tournament, field, value)

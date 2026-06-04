@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import {
   BarChart3,
@@ -12,7 +12,6 @@ import {
   X,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { SiteFooter } from "../components/SiteFooter";
 
 const navItems = [
   {
@@ -51,6 +50,31 @@ function navClass({ isActive }: { isActive: boolean }) {
   return isActive
     ? "flex items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 font-bold text-mundial-gold"
     : "flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-200 hover:bg-white/10 hover:text-white";
+}
+
+function AppInternalFooter() {
+  return (
+    <footer className="border-t border-white/10 bg-mundial-dark/95">
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 text-center sm:px-6 md:flex-row md:text-left lg:px-10">
+        <p className="text-sm font-semibold text-slate-300">
+          © {new Date().getFullYear()} Prode Mundial. Todos los derechos
+          reservados.
+        </p>
+
+        <div className="flex items-center justify-center gap-3">
+          <span className="text-sm font-bold text-slate-300">
+            Desarrollado por
+          </span>
+
+          <img
+            src="/saltia-logo.png"
+            alt="SaltIA"
+            className="h-9 w-auto object-contain"
+          />
+        </div>
+      </div>
+    </footer>
+  );
 }
 
 export function AppLayout() {
@@ -125,9 +149,7 @@ export function AppLayout() {
               {user?.first_name} {user?.last_name}
             </p>
 
-            <p className="truncate text-xs text-slate-300">
-              {user?.email}
-            </p>
+            <p className="truncate text-xs text-slate-300">{user?.email}</p>
 
             <p className="mt-1 inline-flex rounded-full bg-mundial-green/10 px-2 py-1 text-xs font-black text-mundial-gold">
               {user?.role}
@@ -209,12 +231,15 @@ export function AppLayout() {
         </div>
       )}
 
-      <main className="min-h-screen px-4 py-6 sm:px-6 lg:ml-72 lg:px-10 lg:py-10">
-        <div className="mx-auto w-full max-w-7xl">
-          <Outlet />
-        </div>
-      </main>
-      <SiteFooter />
+      <div className="flex min-h-screen flex-col lg:ml-72">
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
+          <div className="mx-auto w-full max-w-7xl">
+            <Outlet />
+          </div>
+        </main>
+
+        <AppInternalFooter />
+      </div>
     </div>
   );
 }
