@@ -93,15 +93,14 @@ export function LandingPage() {
 
           <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.03fr_0.97fr] lg:px-8 lg:py-24">
             <div className="flex flex-col justify-center">
-              <div className="mb-6 flex flex-col gap-5 sm:flex-row sm:items-center">
-                <div className="flex h-32 w-32 shrink-0 items-center justify-center overflow-hidden rounded-[2.25rem] border border-mundial-line bg-white p-3 shadow-mundial sm:h-40 sm:w-40 sm:rounded-[2.5rem]">
+               <div className="flex h-32 w-32 shrink-0 items-center justify-center overflow-hidden rounded-[2.25rem] border border-mundial-line bg-white p-3 shadow-mundial sm:h-40 sm:w-40 sm:rounded-[2.5rem]">
                   <img
                     src="/logosistema.jpeg"
                     alt="Logo Prode Mundial"
                     className="h-full w-full object-contain"
                   />
                 </div>
-
+              <div className="mb-6 flex flex-col gap-5 sm:flex-row sm:items-center">
                 <div>
                   <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-mundial-line bg-white px-4 py-2 text-sm font-black text-mundial-navy shadow-mundial">
                     <Sparkles size={16} className="text-mundial-gold" />
