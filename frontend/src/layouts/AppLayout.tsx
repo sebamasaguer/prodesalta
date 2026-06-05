@@ -99,7 +99,7 @@ export function AppLayout() {
           className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white p-1 shadow-mundial"
         >
           <img
-            src="/logosistema.jpeg"
+            src="/logochico.png"
             alt="Prode Mundial"
             className="h-full w-full object-contain"
           />
@@ -180,7 +180,7 @@ export function AppLayout() {
           <Link to="/dashboard" className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white p-1 shadow-mundial">
               <img
-                src="/logosistema.jpeg"
+                src="/logochico.png"
                 alt="Prode Mundial"
                 className="h-full w-full object-contain"
               />
