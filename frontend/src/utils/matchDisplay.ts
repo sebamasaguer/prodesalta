@@ -12,6 +12,10 @@ export function resolveAssetUrl(value: string | null | undefined): string | null
     return value;
   }
 
+  if (value.startsWith("/")) {
+    return value;
+  }
+
   return `${BACKEND_BASE_URL}${value}`;
 }
 
