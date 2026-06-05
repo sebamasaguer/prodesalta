@@ -7,7 +7,7 @@ export function Navbar() {
         <a href="/" className="flex items-center gap-4">
           <div className="flex h-24 w-36 items-center justify-center overflow-hidden rounded-3xl border border-mundial-line bg-white p-2 shadow-mundial sm:h-28 sm:w-44">
             <img
-              src="/logosistema.jpeg"
+              src="/logochico.png"
               alt="Prode Mundial"
               className="h-full w-full object-contain"
             />

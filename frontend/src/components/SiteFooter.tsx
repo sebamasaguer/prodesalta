@@ -11,11 +11,13 @@ export function SiteFooter() {
             Desarrollado por
           </span>
 
-          <img
-            src="/saltia-logo.png"
-            alt="SaltIA"
-            className="h-10 w-auto object-contain"
-          />
+          <a href="https://saltia.com.ar" target="_blank" rel="noopener noreferrer">
+            <img
+              src="/saltia-logo.png"
+              alt="SaltIA"
+              className="h-28 w-auto object-contain"
+            />
+          </a>
         </div>
       </div>
     </footer>
