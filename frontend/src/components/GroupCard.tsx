@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Copy, Crown, Users } from "lucide-react";
+import { Copy, Crown, Share2, Users } from "lucide-react";
 import type { ProdeGroup } from "../types/prodeGroup";
 
 interface GroupCardProps {
@@ -10,6 +10,12 @@ export function GroupCard({ group }: GroupCardProps) {
   async function copyInviteCode() {
     await navigator.clipboard.writeText(group.invite_code);
     alert(`Código copiado: ${group.invite_code}`);
+  }
+
+  function shareOnWhatsApp() {
+    const message = `¡Unite al Prode 2026! 🏆⚽\nUsá el código *${group.invite_code}* del grupo *${group.name}* en prode2026.saltia.com.ar y hacé tus predicciones!`;
+    const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
   }
 
   return (
@@ -60,12 +66,22 @@ export function GroupCard({ group }: GroupCardProps) {
         </div>
       </div>
 
-      <Link
-        to={`/grupos/${group.id}`}
-        className="inline-flex w-full items-center justify-center rounded-2xl bg-mundial-green px-4 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight"
-      >
-        Ver grupo
-      </Link>
+      <div className="flex flex-col gap-2">
+        <Link
+          to={`/grupos/${group.id}`}
+          className="inline-flex w-full items-center justify-center rounded-2xl bg-mundial-green px-4 py-3 font-black text-mundial-dark hover:bg-mundial-greenLight"
+        >
+          Ver grupo
+        </Link>
+
+        <button
+          onClick={shareOnWhatsApp}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[#25D366]/30 bg-[#25D366]/10 px-4 py-3 font-black text-[#25D366] hover:bg-[#25D366]/20"
+        >
+          <Share2 size={16} />
+          Compartir por WhatsApp
+        </button>
+      </div>
     </div>
   );
 }
