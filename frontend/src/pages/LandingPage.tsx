@@ -13,8 +13,11 @@ import {
 import { Link } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { SiteFooter } from "../components/SiteFooter";
+import { MatchCalendar } from "../components/MatchCalendar";
 import { listPublicSponsors } from "../api/sponsors";
+import { listPublicMatches } from "../api/fixture";
 import type { Sponsor } from "../types/sponsor";
+import type { Match } from "../types/fixture";
 import { resolveAssetUrl } from "../utils/matchDisplay";
 
 const features = [
@@ -67,20 +70,25 @@ function handleSponsorLogoError(event: React.SyntheticEvent<HTMLImageElement>) {
 
 export function LandingPage() {
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+  const [publicMatches, setPublicMatches] = useState<Match[]>([]);
 
   useEffect(() => {
     let mounted = true;
 
     listPublicSponsors()
       .then((data) => {
-        if (mounted) {
-          setSponsors(data);
-        }
+        if (mounted) setSponsors(data);
       })
       .catch(() => {
-        if (mounted) {
-          setSponsors([]);
-        }
+        if (mounted) setSponsors([]);
+      });
+
+    listPublicMatches()
+      .then((data) => {
+        if (mounted) setPublicMatches(data);
+      })
+      .catch(() => {
+        if (mounted) setPublicMatches([]);
       });
 
     return () => {
@@ -373,6 +381,37 @@ export function LandingPage() {
             })}
           </div>
         </section>
+
+        {publicMatches.length > 0 && (
+          <section
+            id="fixture"
+            className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8"
+          >
+            <div className="rounded-[2rem] border border-mundial-line bg-white p-6 shadow-mundial md:p-8">
+              <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <p className="text-sm font-black uppercase tracking-[0.2em] text-mundial-blue">
+                    Fixture
+                  </p>
+                  <h2 className="mt-2 text-3xl font-black text-mundial-navy">
+                    Partidos del Mundial 2026
+                  </h2>
+                  <p className="mt-2 font-semibold text-mundial-muted">
+                    Seleccioná un día para ver los partidos programados.
+                  </p>
+                </div>
+                <Link
+                  to="/login"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-mundial-navy px-5 py-3 font-black text-white shadow-mundialDark hover:bg-mundial-blue"
+                >
+                  Ver todos
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+              <MatchCalendar matches={publicMatches} variant="light" />
+            </div>
+          </section>
+        )}
 
         <section
           id="modalidades"

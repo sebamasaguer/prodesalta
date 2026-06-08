@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { RefreshCw, Search, X } from "lucide-react";
 import { listMatches } from "../api/fixture";
 import { MatchCard } from "../components/MatchCard";
+import { MatchCalendar } from "../components/MatchCalendar";
 import type { Match, MatchPhase, MatchStatus } from "../types/fixture";
 import { awayName, homeName } from "../utils/matchDisplay";
 
@@ -180,6 +181,20 @@ export function MatchesPage() {
           Actualizar
         </button>
       </div>
+
+      {!isLoading && matches.length > 0 && (
+        <div className="mb-6 rounded-3xl border border-white/10 bg-white/5 p-5 shadow-xl">
+          <p className="mb-4 text-sm font-black uppercase tracking-[0.2em] text-mundial-greenSoft">
+            Calendario
+          </p>
+          <MatchCalendar
+            matches={matches}
+            selectedDate={selectedDate}
+            onSelectDate={setSelectedDate}
+            variant="dark"
+          />
+        </div>
+      )}
 
       <div className="mb-6 rounded-3xl border border-white/10 bg-white/5 p-5 shadow-xl">
         <div className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-center">

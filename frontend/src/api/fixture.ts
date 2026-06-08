@@ -36,6 +36,11 @@ export async function listMatches(): Promise<Match[]> {
   return response.data;
 }
 
+export async function listPublicMatches(): Promise<Match[]> {
+  const response = await api.get<Match[]>("/matches/public");
+  return response.data;
+}
+
 export async function listUpcomingMatches(): Promise<Match[]> {
   const response = await api.get<Match[]>("/matches/upcoming");
   return response.data;

@@ -18,6 +18,11 @@ from app.services.match_service import (
 router = APIRouter(prefix="/matches", tags=["matches"])
 
 
+@router.get("/public", response_model=list[MatchRead])
+def get_public_matches(db: DbSession):
+    return list_matches(db)
+
+
 @router.get("", response_model=list[MatchRead])
 def get_matches(
     db: DbSession,
