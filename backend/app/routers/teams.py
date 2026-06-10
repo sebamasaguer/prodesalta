@@ -5,10 +5,11 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 
 from app.core.deps import CurrentUser, DbSession, require_admin
 from app.models.user import User
-from app.schemas.team import TeamCreate, TeamRead, TeamUpdate
+from app.schemas.team import TeamCreate, TeamDetail, TeamRead, TeamUpdate
 from app.services.team_service import (
     create_team,
     get_team_by_id,
+    get_team_detail,
     list_teams,
     update_team,
 )
@@ -26,6 +27,17 @@ def get_teams(
     current_user: CurrentUser,
 ):
     return list_teams(db)
+
+
+@router.get("/{team_id}/detail", response_model=TeamDetail)
+def get_team_detail_endpoint(team_id: int, db: DbSession):
+    detail = get_team_detail(db, team_id)
+    if not detail:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Equipo no encontrado",
+        )
+    return detail
 
 
 @router.post("", response_model=TeamRead, status_code=status.HTTP_201_CREATED)

@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     SMTP_USE_TLS: bool = True
     SMTP_USE_SSL: bool = False
 
+    API_FOOTBALL_KEY: str | None = None
+
     class Config:
         env_file = ".env"
         extra = "ignore"

@@ -9,6 +9,7 @@ import {
   homeFlag,
   homeName,
 } from "../utils/matchDisplay";
+import { TeamDetailModal } from "./TeamDetailModal";
 
 interface MatchCalendarProps {
   matches: Match[];
@@ -91,20 +92,30 @@ function TeamChip({
   code,
   flagUrl,
   variant,
+  teamId,
+  onTeamClick,
 }: {
   name: string;
   code: string;
   flagUrl: string | null;
   variant: "light" | "dark";
+  teamId: number | null;
+  onTeamClick?: (id: number) => void;
 }) {
+  const clickable = !!(teamId && onTeamClick);
+
   return (
     <div className="flex min-w-0 flex-1 items-center gap-2">
-      <div
-        className={`flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-xl border ${
+      <button
+        type="button"
+        disabled={!clickable}
+        onClick={clickable ? () => onTeamClick!(teamId!) : undefined}
+        className={`flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-xl border transition ${
           variant === "light"
             ? "border-slate-200 bg-slate-50"
             : "border-white/10 bg-white/5"
-        }`}
+        } ${clickable ? "cursor-pointer hover:scale-110 hover:shadow-md" : "cursor-default"}`}
+        title={clickable ? `Ver selección de ${name}` : undefined}
       >
         {flagUrl ? (
           <img
@@ -119,7 +130,7 @@ function TeamChip({
             className={variant === "light" ? "text-slate-400" : "text-slate-500"}
           />
         )}
-      </div>
+      </button>
       <div className="min-w-0">
         <p
           className={`truncate text-sm font-black leading-none ${
@@ -142,7 +153,15 @@ function TeamChip({
   );
 }
 
-function MatchRow({ match, variant }: { match: Match; variant: "light" | "dark" }) {
+function MatchRow({
+  match,
+  variant,
+  onTeamClick,
+}: {
+  match: Match;
+  variant: "light" | "dark";
+  onTeamClick?: (id: number) => void;
+}) {
   const home = homeName(match);
   const away = awayName(match);
   const homeTeamCode = homeCode(match);
@@ -184,6 +203,8 @@ function MatchRow({ match, variant }: { match: Match; variant: "light" | "dark" 
         code={homeTeamCode}
         flagUrl={homeTeamFlag}
         variant={variant}
+        teamId={match.home_team_id}
+        onTeamClick={onTeamClick}
       />
 
       <div className="shrink-0 text-center">
@@ -211,6 +232,8 @@ function MatchRow({ match, variant }: { match: Match; variant: "light" | "dark" 
         code={awayTeamCode}
         flagUrl={awayTeamFlag}
         variant={variant}
+        teamId={match.away_team_id}
+        onTeamClick={onTeamClick}
       />
 
       <span
@@ -231,6 +254,7 @@ export function MatchCalendar({
   variant = "dark",
 }: MatchCalendarProps) {
   const stripRef = useRef<HTMLDivElement>(null);
+  const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
 
   const grouped = matches.reduce<Record<string, Match[]>>((acc, match) => {
     const key = localDateKey(match.match_datetime);
@@ -262,74 +286,88 @@ export function MatchCalendar({
   const dayMatches = grouped[activeDate] ?? [];
 
   return (
-    <div>
-      <div
-        ref={stripRef}
-        className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"
-        style={{ scrollbarWidth: "none" }}
-      >
-        {days.map((day) => {
-          const d = new Date(day + "T12:00:00");
-          const isActive = day === activeDate;
-          const count = grouped[day].length;
+    <>
+      <div>
+        <div
+          ref={stripRef}
+          className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {days.map((day) => {
+            const d = new Date(day + "T12:00:00");
+            const isActive = day === activeDate;
+            const count = grouped[day].length;
 
-          return (
-            <button
-              key={day}
-              data-day={day}
-              onClick={() => handleSelect(day)}
-              className={`flex shrink-0 flex-col items-center rounded-2xl px-4 py-3 transition ${
-                isActive
-                  ? variant === "light"
-                    ? "bg-mundial-navy text-white shadow-mundialDark"
-                    : "bg-mundial-gold text-mundial-navy shadow-mundialGold"
-                  : variant === "light"
-                  ? "border border-mundial-line bg-white text-mundial-navy hover:bg-mundial-light"
-                  : "border border-white/10 bg-white/5 text-slate-200 hover:bg-white/10"
-              }`}
-            >
-              <span className="text-xs font-bold uppercase tracking-wide opacity-70">
-                {DAY_SHORT[d.getDay()]}
-              </span>
-              <span className="mt-0.5 text-xl font-black leading-none">
-                {d.getDate()}
-              </span>
-              <span className="mt-0.5 text-xs font-semibold opacity-70">
-                {MONTH_SHORT[d.getMonth()]}
-              </span>
-              <span
-                className={`mt-1.5 rounded-full px-2 py-0.5 text-xs font-black ${
+            return (
+              <button
+                key={day}
+                data-day={day}
+                onClick={() => handleSelect(day)}
+                className={`flex shrink-0 flex-col items-center rounded-2xl px-4 py-3 transition ${
                   isActive
                     ? variant === "light"
-                      ? "bg-white/20 text-white"
-                      : "bg-mundial-navy/20 text-mundial-navy"
+                      ? "bg-mundial-navy text-white shadow-mundialDark"
+                      : "bg-mundial-gold text-mundial-navy shadow-mundialGold"
                     : variant === "light"
-                    ? "bg-mundial-green/10 text-mundial-green"
-                    : "bg-mundial-green/20 text-mundial-greenSoft"
+                    ? "border border-mundial-line bg-white text-mundial-navy hover:bg-mundial-light"
+                    : "border border-white/10 bg-white/5 text-slate-200 hover:bg-white/10"
                 }`}
               >
-                {count}
-              </span>
-            </button>
-          );
-        })}
+                <span className="text-xs font-bold uppercase tracking-wide opacity-70">
+                  {DAY_SHORT[d.getDay()]}
+                </span>
+                <span className="mt-0.5 text-xl font-black leading-none">
+                  {d.getDate()}
+                </span>
+                <span className="mt-0.5 text-xs font-semibold opacity-70">
+                  {MONTH_SHORT[d.getMonth()]}
+                </span>
+                <span
+                  className={`mt-1.5 rounded-full px-2 py-0.5 text-xs font-black ${
+                    isActive
+                      ? variant === "light"
+                        ? "bg-white/20 text-white"
+                        : "bg-mundial-navy/20 text-mundial-navy"
+                      : variant === "light"
+                      ? "bg-mundial-green/10 text-mundial-green"
+                      : "bg-mundial-green/20 text-mundial-greenSoft"
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 space-y-2">
+          {dayMatches.length === 0 ? (
+            <p
+              className={`py-4 text-center text-sm font-semibold ${
+                variant === "light" ? "text-mundial-muted" : "text-slate-400"
+              }`}
+            >
+              No hay partidos este día
+            </p>
+          ) : (
+            dayMatches.map((match) => (
+              <MatchRow
+                key={match.id}
+                match={match}
+                variant={variant}
+                onTeamClick={setSelectedTeamId}
+              />
+            ))
+          )}
+        </div>
       </div>
 
-      <div className="mt-4 space-y-2">
-        {dayMatches.length === 0 ? (
-          <p
-            className={`py-4 text-center text-sm font-semibold ${
-              variant === "light" ? "text-mundial-muted" : "text-slate-400"
-            }`}
-          >
-            No hay partidos este día
-          </p>
-        ) : (
-          dayMatches.map((match) => (
-            <MatchRow key={match.id} match={match} variant={variant} />
-          ))
-        )}
-      </div>
-    </div>
+      {selectedTeamId != null && (
+        <TeamDetailModal
+          teamId={selectedTeamId}
+          onClose={() => setSelectedTeamId(null)}
+        />
+      )}
+    </>
   );
 }

@@ -25,3 +25,41 @@ class TeamRead(BaseModel):
     model_config = {
         "from_attributes": True,
     }
+
+
+class PlayerInSquad(BaseModel):
+    id: int
+    name: str
+    number: int | None = None
+    position: str | None = None
+    age: int | None = None
+    nationality: str | None = None
+    photo_url: str | None = None
+
+    model_config = {
+        "from_attributes": True,
+    }
+
+
+class TeamDetail(BaseModel):
+    id: int
+    name: str
+    code: str
+    flag_url: str | None = None
+    coach_name: str | None = None
+    coach_nationality: str | None = None
+    country: str | None = None
+    founded: int | None = None
+    first_wc_year: int | None = None
+    wc_participations: int | None = None
+    wc_played: int | None = None
+    wc_wins: int | None = None
+    wc_draws: int | None = None
+    wc_losses: int | None = None
+    wc_goals_scored: int | None = None
+    wc_goals_conceded: int | None = None
+    players: list[PlayerInSquad] = []
+
+    model_config = {
+        "from_attributes": True,
+    }
