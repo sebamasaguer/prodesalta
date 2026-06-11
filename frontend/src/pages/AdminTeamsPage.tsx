@@ -329,7 +329,92 @@ export function AdminTeamsPage() {
         </div>
       )}
 
-      <div className="grid gap-6 xl:grid-cols-[0.7fr_1.3fr]">
+      <div className="space-y-6">
+        {/* Lista de equipos */}
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl">
+          <div className="mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+            <div>
+              <h2 className="text-2xl font-black">Países cargados</h2>
+              <p className="mt-1 text-sm text-slate-300">
+                Mostrando {filteredTeams.length} de {teams.length}.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 focus-within:border-mundial-green md:w-80">
+              <Search size={18} className="text-slate-400" />
+              <input
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                placeholder="Buscar país o código..."
+                className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
+              />
+              {searchText && (
+                <button
+                  type="button"
+                  onClick={() => setSearchText("")}
+                  className="text-slate-400 hover:text-white"
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {isLoading ? (
+            <div className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-6 text-slate-200">
+              Cargando países...
+            </div>
+          ) : filteredTeams.length === 0 ? (
+            <div className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-8 text-center">
+              <Flag className="mx-auto mb-4 text-slate-400" size={36} />
+              <h3 className="text-xl font-black">No hay países encontrados</h3>
+            </div>
+          ) : (
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+              {filteredTeams.map((team) => {
+                const flagUrl = resolveFlagUrl(team.flag_url);
+                return (
+                  <div
+                    key={team.id}
+                    className="rounded-2xl border border-white/10 bg-mundial-dark/70 p-4"
+                  >
+                    <div className="flex flex-col items-center gap-3 text-center">
+                      <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                        {flagUrl ? (
+                          <img
+                            src={flagUrl}
+                            alt={team.name}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <Flag className="text-slate-400" size={28} />
+                        )}
+                      </div>
+                      <div className="min-w-0 w-full">
+                        <p className="truncate font-black">{team.name}</p>
+                        <p className="text-xs font-black text-red-100">{team.code}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => openDrawer(team)}
+                          className="rounded-xl border border-white/10 bg-white/5 p-2 text-slate-200 hover:bg-white/10"
+                        >
+                          <Edit3 size={14} />
+                        </button>
+                        <button
+                          onClick={() => setDeletingTeamId(team.id)}
+                          className="rounded-xl border border-red-500/20 bg-red-500/10 p-2 text-red-400 hover:bg-red-500/20"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
         {/* Formulario crear */}
         <form
           onSubmit={handleCreate}
@@ -380,90 +465,6 @@ export function AdminTeamsPage() {
           </div>
         </form>
 
-        {/* Lista de equipos */}
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl">
-          <div className="mb-5 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-            <div>
-              <h2 className="text-2xl font-black">Países cargados</h2>
-              <p className="mt-1 text-sm text-slate-300">
-                Mostrando {filteredTeams.length} de {teams.length}.
-              </p>
-            </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-mundial-dark px-4 py-3 focus-within:border-mundial-green md:w-80">
-              <Search size={18} className="text-slate-400" />
-              <input
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                placeholder="Buscar país o código..."
-                className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
-              />
-              {searchText && (
-                <button
-                  type="button"
-                  onClick={() => setSearchText("")}
-                  className="text-slate-400 hover:text-white"
-                >
-                  <X size={16} />
-                </button>
-              )}
-            </div>
-          </div>
-
-          {isLoading ? (
-            <div className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-6 text-slate-200">
-              Cargando países...
-            </div>
-          ) : filteredTeams.length === 0 ? (
-            <div className="rounded-2xl border border-white/10 bg-mundial-dark/60 p-8 text-center">
-              <Flag className="mx-auto mb-4 text-slate-400" size={36} />
-              <h3 className="text-xl font-black">No hay países encontrados</h3>
-            </div>
-          ) : (
-            <div className="grid max-h-[720px] gap-3 overflow-y-auto pr-2 md:grid-cols-2">
-              {filteredTeams.map((team) => {
-                const flagUrl = resolveFlagUrl(team.flag_url);
-                return (
-                  <div
-                    key={team.id}
-                    className="rounded-2xl border border-white/10 bg-mundial-dark/70 p-4"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-                        {flagUrl ? (
-                          <img
-                            src={flagUrl}
-                            alt={team.name}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <Flag className="text-slate-400" size={24} />
-                        )}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-xl font-black">{team.name}</p>
-                        <p className="mt-1 text-sm font-black text-red-100">{team.code}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => openDrawer(team)}
-                          className="inline-flex items-center gap-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-bold text-slate-200 hover:bg-white/10"
-                        >
-                          <Edit3 size={14} /> Editar
-                        </button>
-                        <button
-                          onClick={() => setDeletingTeamId(team.id)}
-                          className="rounded-xl border border-red-500/20 bg-red-500/10 p-2 text-red-400 hover:bg-red-500/20"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Modal confirmación eliminar */}
