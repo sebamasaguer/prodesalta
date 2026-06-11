@@ -5,7 +5,14 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 
 from app.core.deps import CurrentUser, DbSession, require_admin
 from app.models.user import User
+from app.schemas.player import PlayerCreate, PlayerRead, PlayerUpdate
 from app.schemas.team import TeamCreate, TeamDetail, TeamRead, TeamUpdate
+from app.services.player_service import (
+    create_player_in_team,
+    list_team_players,
+    remove_player_from_team,
+    update_player_in_team,
+)
 from app.services.team_service import (
     create_team,
     get_team_by_id,
@@ -65,6 +72,86 @@ def patch_team(
         )
 
     return update_team(db, team, data)
+
+
+@router.delete("/{team_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_team(
+    team_id: int,
+    db: DbSession,
+    _: User = Depends(require_admin),
+):
+    team = get_team_by_id(db, team_id)
+    if not team:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Equipo no encontrado",
+        )
+    db.delete(team)
+    db.commit()
+
+
+@router.get("/{team_id}/players", response_model=list[PlayerRead])
+def get_team_players(
+    team_id: int,
+    db: DbSession,
+    _: User = Depends(require_admin),
+):
+    return list_team_players(db, team_id)
+
+
+@router.post(
+    "/{team_id}/players",
+    response_model=PlayerRead,
+    status_code=status.HTTP_201_CREATED,
+)
+def add_player_to_team(
+    team_id: int,
+    data: PlayerCreate,
+    db: DbSession,
+    _: User = Depends(require_admin),
+):
+    team = get_team_by_id(db, team_id)
+    if not team:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Equipo no encontrado",
+        )
+    return create_player_in_team(db, team_id, data)
+
+
+@router.patch("/{team_id}/players/{player_id}", response_model=PlayerRead)
+def update_team_player(
+    team_id: int,
+    player_id: int,
+    data: PlayerUpdate,
+    db: DbSession,
+    _: User = Depends(require_admin),
+):
+    result = update_player_in_team(db, team_id, player_id, data)
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Jugador no encontrado en este equipo",
+        )
+    return result
+
+
+@router.delete(
+    "/{team_id}/players/{player_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def remove_player(
+    team_id: int,
+    player_id: int,
+    db: DbSession,
+    _: User = Depends(require_admin),
+):
+    ok = remove_player_from_team(db, team_id, player_id)
+    if not ok:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Jugador no encontrado en este equipo",
+        )
 
 
 @router.post("/{team_id}/flag", response_model=TeamRead)
