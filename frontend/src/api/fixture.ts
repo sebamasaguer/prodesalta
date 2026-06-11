@@ -5,6 +5,7 @@ import type {
   MatchResultPayload,
   Team,
   TeamCreatePayload,
+  TeamUpdatePayload,
   Tournament,
   TournamentCreatePayload,
 } from "../types/fixture";
@@ -66,14 +67,14 @@ export async function closeMatch(matchId: number): Promise<Match> {
 
 export async function updateTeam(
   teamId: number,
-  payload: {
-    name?: string;
-    code?: string;
-    flag_url?: string | null;
-  },
+  payload: TeamUpdatePayload,
 ): Promise<Team> {
   const response = await api.patch<Team>(`/teams/${teamId}`, payload);
   return response.data;
+}
+
+export async function deleteTeam(teamId: number): Promise<void> {
+  await api.delete(`/teams/${teamId}`);
 }
 
 export async function uploadTeamFlag(

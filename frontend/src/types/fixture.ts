@@ -28,6 +28,23 @@ export interface Team {
   name: string;
   code: string;
   flag_url: string | null;
+  country: string | null;
+  founded: number | null;
+  coach_name: string | null;
+  coach_nationality: string | null;
+  coach_photo: string | null;
+  venue_name: string | null;
+  venue_city: string | null;
+  venue_capacity: number | null;
+  venue_photo: string | null;
+  first_wc_year: number | null;
+  wc_participations: number | null;
+  wc_played: number | null;
+  wc_wins: number | null;
+  wc_draws: number | null;
+  wc_losses: number | null;
+  wc_goals_scored: number | null;
+  wc_goals_conceded: number | null;
   created_at: string;
 }
 
@@ -68,6 +85,29 @@ export interface TeamCreatePayload {
   name: string;
   code: string;
   flag_url?: string | null;
+}
+
+export interface TeamUpdatePayload {
+  name?: string | null;
+  code?: string | null;
+  flag_url?: string | null;
+  country?: string | null;
+  founded?: number | null;
+  coach_name?: string | null;
+  coach_nationality?: string | null;
+  coach_photo?: string | null;
+  venue_name?: string | null;
+  venue_city?: string | null;
+  venue_capacity?: number | null;
+  venue_photo?: string | null;
+  first_wc_year?: number | null;
+  wc_participations?: number | null;
+  wc_played?: number | null;
+  wc_wins?: number | null;
+  wc_draws?: number | null;
+  wc_losses?: number | null;
+  wc_goals_scored?: number | null;
+  wc_goals_conceded?: number | null;
 }
 
 export interface MatchCreatePayload {
