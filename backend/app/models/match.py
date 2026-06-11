@@ -29,6 +29,7 @@ class Match(Base):
     __tablename__ = "matches"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    api_football_id: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
 
     tournament_id: Mapped[int] = mapped_column(
         ForeignKey("tournaments.id", ondelete="CASCADE"),

@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -20,14 +21,23 @@ from app.routers import (
     tournaments,
     users,
 )
-
+from app.scheduler import start_scheduler, stop_scheduler
 
 settings = get_settings()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    start_scheduler()
+    yield
+    stop_scheduler()
+
 
 app = FastAPI(
     title=settings.APP_NAME,
     debug=settings.APP_DEBUG,
     version="0.9.5",
+    lifespan=lifespan,
 )
 
 BASE_DIR = Path(__file__).resolve().parent
