@@ -18,56 +18,68 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    # Columnas nuevas en teams
-    op.add_column("teams", sa.Column("api_football_id", sa.Integer(), nullable=True))
-    op.add_column("teams", sa.Column("country", sa.String(120), nullable=True))
-    op.add_column("teams", sa.Column("founded", sa.Integer(), nullable=True))
-    op.add_column("teams", sa.Column("coach_name", sa.String(160), nullable=True))
-    op.add_column("teams", sa.Column("coach_nationality", sa.String(100), nullable=True))
-    op.add_column("teams", sa.Column("coach_photo", sa.String(500), nullable=True))
-    op.add_column("teams", sa.Column("venue_name", sa.String(200), nullable=True))
-    op.add_column("teams", sa.Column("venue_city", sa.String(120), nullable=True))
-    op.add_column("teams", sa.Column("venue_capacity", sa.Integer(), nullable=True))
-    op.add_column("teams", sa.Column("venue_photo", sa.String(500), nullable=True))
-    op.create_index("ix_teams_api_football_id", "teams", ["api_football_id"])
+    conn = op.get_bind()
+
+    # Columnas nuevas en teams (IF NOT EXISTS para idempotencia)
+    for col, typedef in [
+        ("api_football_id", "INTEGER"),
+        ("country", "VARCHAR(120)"),
+        ("founded", "INTEGER"),
+        ("coach_name", "VARCHAR(160)"),
+        ("coach_nationality", "VARCHAR(100)"),
+        ("coach_photo", "VARCHAR(500)"),
+        ("venue_name", "VARCHAR(200)"),
+        ("venue_city", "VARCHAR(120)"),
+        ("venue_capacity", "INTEGER"),
+        ("venue_photo", "VARCHAR(500)"),
+    ]:
+        conn.execute(sa.text(
+            f"ALTER TABLE teams ADD COLUMN IF NOT EXISTS {col} {typedef}"
+        ))
+
+    conn.execute(sa.text(
+        "CREATE INDEX IF NOT EXISTS ix_teams_api_football_id ON teams (api_football_id)"
+    ))
 
     # Tabla players
-    op.create_table(
-        "players",
-        sa.Column("id", sa.Integer(), primary_key=True, index=True, nullable=False),
-        sa.Column("api_football_id", sa.Integer(), nullable=True),
-        sa.Column("name", sa.String(200), nullable=False),
-        sa.Column("firstname", sa.String(100), nullable=True),
-        sa.Column("lastname", sa.String(100), nullable=True),
-        sa.Column("birth_date", sa.Date(), nullable=True),
-        sa.Column("birth_place", sa.String(120), nullable=True),
-        sa.Column("birth_country", sa.String(100), nullable=True),
-        sa.Column("nationality", sa.String(100), nullable=True),
-        sa.Column("height", sa.String(20), nullable=True),
-        sa.Column("weight", sa.String(20), nullable=True),
-        sa.Column("photo_url", sa.String(500), nullable=True),
-        sa.Column("age", sa.Integer(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
-    )
-    op.create_index("ix_players_id", "players", ["id"])
-    op.create_index("ix_players_api_football_id", "players", ["api_football_id"])
+    conn.execute(sa.text("""
+        CREATE TABLE IF NOT EXISTS players (
+            id SERIAL PRIMARY KEY,
+            api_football_id INTEGER,
+            name VARCHAR(200) NOT NULL,
+            firstname VARCHAR(100),
+            lastname VARCHAR(100),
+            birth_date DATE,
+            birth_place VARCHAR(120),
+            birth_country VARCHAR(100),
+            nationality VARCHAR(100),
+            height VARCHAR(20),
+            weight VARCHAR(20),
+            photo_url VARCHAR(500),
+            age INTEGER,
+            created_at TIMESTAMPTZ NOT NULL,
+            updated_at TIMESTAMPTZ NOT NULL
+        )
+    """))
+    conn.execute(sa.text("CREATE INDEX IF NOT EXISTS ix_players_id ON players (id)"))
+    conn.execute(sa.text("CREATE INDEX IF NOT EXISTS ix_players_api_football_id ON players (api_football_id)"))
 
     # Tabla team_squads
-    op.create_table(
-        "team_squads",
-        sa.Column("id", sa.Integer(), primary_key=True, index=True, nullable=False),
-        sa.Column("team_id", sa.Integer(), sa.ForeignKey("teams.id", ondelete="CASCADE"), nullable=False),
-        sa.Column("player_id", sa.Integer(), sa.ForeignKey("players.id", ondelete="CASCADE"), nullable=False),
-        sa.Column("position", sa.String(60), nullable=True),
-        sa.Column("jersey_number", sa.Integer(), nullable=True),
-        sa.Column("season", sa.Integer(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-    )
-    op.create_index("ix_team_squads_id", "team_squads", ["id"])
-    op.create_index("ix_team_squads_team_id", "team_squads", ["team_id"])
-    op.create_index("ix_team_squads_player_id", "team_squads", ["player_id"])
-    op.create_index("ix_team_squads_season", "team_squads", ["season"])
+    conn.execute(sa.text("""
+        CREATE TABLE IF NOT EXISTS team_squads (
+            id SERIAL PRIMARY KEY,
+            team_id INTEGER NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
+            player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
+            position VARCHAR(60),
+            jersey_number INTEGER,
+            season INTEGER,
+            created_at TIMESTAMPTZ NOT NULL
+        )
+    """))
+    conn.execute(sa.text("CREATE INDEX IF NOT EXISTS ix_team_squads_id ON team_squads (id)"))
+    conn.execute(sa.text("CREATE INDEX IF NOT EXISTS ix_team_squads_team_id ON team_squads (team_id)"))
+    conn.execute(sa.text("CREATE INDEX IF NOT EXISTS ix_team_squads_player_id ON team_squads (player_id)"))
+    conn.execute(sa.text("CREATE INDEX IF NOT EXISTS ix_team_squads_season ON team_squads (season)"))
 
 
 def downgrade() -> None:
