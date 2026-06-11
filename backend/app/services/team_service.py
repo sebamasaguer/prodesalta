@@ -144,12 +144,17 @@ def update_team(
 
         team.code = new_code
 
-    if "flag_url" in update_data:
-        team.flag_url = (
-            update_data["flag_url"].strip()
-            if update_data["flag_url"]
-            else None
-        )
+    simple_fields = [
+        "flag_url", "country", "founded",
+        "coach_name", "coach_nationality", "coach_photo",
+        "venue_name", "venue_city", "venue_capacity", "venue_photo",
+        "first_wc_year", "wc_participations", "wc_played",
+        "wc_wins", "wc_draws", "wc_losses",
+        "wc_goals_scored", "wc_goals_conceded",
+    ]
+    for field in simple_fields:
+        if field in update_data:
+            setattr(team, field, update_data[field])
 
     db.add(team)
     db.commit()
