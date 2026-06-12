@@ -23,6 +23,9 @@ import { RankingPage } from "./pages/RankingPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { StatsPage } from "./pages/StatsPage";
 import { AdminFixtureImportPage } from "./pages/AdminFixtureImportPage";
+import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
+import { ProfilePage } from "./pages/ProfilePage";
+import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { RulesPage } from "./pages/RulesPage";
 import { TermsPage } from "./pages/TermsPage";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
@@ -36,6 +39,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
           <Route path="/verificar-correo" element={<VerifyEmailPage />} />
+          <Route path="/recuperar-contrasena" element={<ForgotPasswordPage />} />
+          <Route path="/restablecer-contrasena" element={<ResetPasswordPage />} />
           <Route path="/terminos" element={<TermsPage />} />
           <Route path="/reglamento" element={<RulesPage />} />
 
@@ -46,6 +51,7 @@ function App() {
               </ProtectedRoute>
             }
           >
+            <Route path="/perfil" element={<ProfilePage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/grupos" element={<GroupsPage />} />
             <Route path="/grupos/nuevo" element={<CreateGroupPage />} />

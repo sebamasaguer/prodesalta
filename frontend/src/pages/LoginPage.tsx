@@ -98,6 +98,15 @@ export function LoginPage() {
               />
             </div>
 
+            <div className="flex justify-end">
+              <Link
+                to="/recuperar-contrasena"
+                className="text-xs font-semibold text-slate-400 hover:text-slate-200"
+              >
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
+
             <button
               type="submit"
               disabled={isSubmitting}

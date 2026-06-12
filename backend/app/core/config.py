@@ -16,6 +16,7 @@ class Settings(BaseSettings):
 
     FRONTEND_BASE_URL: str = "http://localhost:5173"
     EMAIL_VERIFICATION_TOKEN_EXPIRE_MINUTES: int = 60 * 24
+    PASSWORD_RESET_TOKEN_EXPIRE_MINUTES: int = 30
 
     SMTP_HOST: str | None = None
     SMTP_PORT: int = 587

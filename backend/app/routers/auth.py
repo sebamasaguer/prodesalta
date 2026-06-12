@@ -1,9 +1,18 @@
 from fastapi import APIRouter, HTTPException, Query, status
 
 from app.core.deps import CurrentUser, DbSession
-from app.core.security import create_access_token
+from app.core.security import create_access_token, get_password_hash, verify_password
 from app.models.user import UserRole
-from app.schemas.auth import LoginRequest, RegisterResponse, TokenResponse, VerifyEmailRequest
+from app.schemas.auth import (
+    ChangePasswordRequest,
+    ForgotPasswordRequest,
+    ForgotPasswordResponse,
+    LoginRequest,
+    RegisterResponse,
+    ResetPasswordRequest,
+    TokenResponse,
+    VerifyEmailRequest,
+)
 from app.schemas.user import UserCreate, UserRead
 from app.services.email_service import EmailDeliveryError, EmailNotConfiguredError
 from app.services.email_verification_service import (
@@ -11,6 +20,11 @@ from app.services.email_verification_service import (
     PendingRegistrationConflict,
     create_pending_registration,
     verify_pending_registration,
+)
+from app.services.password_reset_service import (
+    InvalidPasswordResetToken,
+    consume_password_reset_token,
+    request_password_reset,
 )
 from app.services.user_service import (
     authenticate_user,
@@ -127,3 +141,65 @@ def login(data: LoginRequest, db: DbSession):
 @router.get("/me", response_model=UserRead)
 def me(current_user: CurrentUser):
     return current_user
+
+
+@router.post("/forgot-password", response_model=ForgotPasswordResponse)
+def forgot_password(data: ForgotPasswordRequest, db: DbSession):
+    user = get_user_by_email(db, str(data.email))
+
+    if not user or not user.is_active:
+        # Respuesta genérica para no revelar si el email existe
+        return ForgotPasswordResponse(
+            message="Si el correo está registrado, te enviaremos las instrucciones para recuperar tu contraseña.",
+        )
+
+    try:
+        email_result = request_password_reset(db, user)
+    except EmailNotConfiguredError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=str(exc),
+        ) from exc
+    except EmailDeliveryError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=str(exc),
+        ) from exc
+
+    return ForgotPasswordResponse(
+        message="Si el correo está registrado, te enviaremos las instrucciones para recuperar tu contraseña.",
+        email_delivery_mode=email_result.mode,
+        dev_reset_url=email_result.dev_verification_url,
+    )
+
+
+@router.post("/reset-password", response_model=TokenResponse)
+def reset_password(data: ResetPasswordRequest, db: DbSession):
+    try:
+        user = consume_password_reset_token(db, data.token, data.new_password)
+    except InvalidPasswordResetToken as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(exc),
+        ) from exc
+
+    return _build_token_response(user)
+
+
+@router.post("/change-password", status_code=status.HTTP_204_NO_CONTENT)
+def change_password(data: ChangePasswordRequest, current_user: CurrentUser, db: DbSession):
+    if not verify_password(data.current_password, current_user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="La contraseña actual es incorrecta",
+        )
+
+    if data.current_password == data.new_password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="La nueva contraseña debe ser distinta a la actual",
+        )
+
+    current_user.password_hash = get_password_hash(data.new_password)
+    db.add(current_user)
+    db.commit()

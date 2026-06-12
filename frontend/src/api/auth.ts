@@ -1,9 +1,13 @@
 import { api, TOKEN_STORAGE_KEY } from "./client";
 import type {
   AuthResponse,
+  ChangePasswordPayload,
+  ForgotPasswordPayload,
+  ForgotPasswordResponse,
   LoginPayload,
   RegisterPayload,
   RegisterResponse,
+  ResetPasswordPayload,
   User,
   VerifyEmailPayload,
 } from "../types/auth";
@@ -40,4 +44,28 @@ export function logout() {
 
 export function hasToken(): boolean {
   return Boolean(localStorage.getItem(TOKEN_STORAGE_KEY));
+}
+
+export async function forgotPassword(
+  payload: ForgotPasswordPayload,
+): Promise<ForgotPasswordResponse> {
+  const response = await api.post<ForgotPasswordResponse>(
+    "/auth/forgot-password",
+    payload,
+  );
+  return response.data;
+}
+
+export async function resetPassword(
+  payload: ResetPasswordPayload,
+): Promise<AuthResponse> {
+  const response = await api.post<AuthResponse>("/auth/reset-password", payload);
+  localStorage.setItem(TOKEN_STORAGE_KEY, response.data.access_token);
+  return response.data;
+}
+
+export async function changePassword(
+  payload: ChangePasswordPayload,
+): Promise<void> {
+  await api.post("/auth/change-password", payload);
 }

@@ -105,6 +105,74 @@ Prode Mundial
         ) from exc
 
 
+def send_password_reset_email(*, to_email: str, full_name: str, reset_url: str) -> EmailDeliveryResult:
+    """
+    Envía el correo de recuperación de contraseña.
+    """
+    subject = "Recuperar contraseña - Prode Mundial"
+    body = f"""Hola {full_name},
+
+Recibimos una solicitud para restablecer la contraseña de tu cuenta en Prode Mundial.
+
+Para crear una nueva contraseña hacé clic en el siguiente enlace (válido por 30 minutos):
+
+{reset_url}
+
+Si no solicitaste este cambio, podés ignorar este mensaje. Tu contraseña no será modificada.
+
+Prode Mundial
+"""
+
+    if not _smtp_is_configured():
+        if _is_production_env():
+            raise EmailNotConfiguredError(
+                "SMTP no está configurado. No se puede enviar el correo de recuperación."
+            )
+
+        print("=" * 100)
+        print("EMAIL DE RECUPERACION DE CONTRASEÑA - MODO DESARROLLO / SMTP NO CONFIGURADO")
+        print(f"Para: {to_email}")
+        print(f"URL: {reset_url}")
+        print("=" * 100)
+        return EmailDeliveryResult(
+            sent=False,
+            mode="dev_console",
+            dev_verification_url=reset_url,
+        )
+
+    message = EmailMessage()
+    message["Subject"] = subject
+    message["From"] = _format_from_header()
+    message["To"] = to_email
+    message.set_content(body)
+
+    try:
+        if settings.SMTP_USE_SSL:
+            with smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, timeout=30) as server:
+                _login_if_needed(server)
+                server.send_message(message)
+            return EmailDeliveryResult(sent=True, mode="smtp_ssl")
+
+        with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=30) as server:
+            server.ehlo()
+            if settings.SMTP_USE_TLS:
+                server.starttls()
+                server.ehlo()
+            _login_if_needed(server)
+            server.send_message(message)
+            return EmailDeliveryResult(sent=True, mode="smtp_tls" if settings.SMTP_USE_TLS else "smtp")
+    except smtplib.SMTPAuthenticationError as exc:
+        raise EmailDeliveryError(
+            "SMTP rechazó usuario o contraseña. Revisá SMTP_USERNAME y SMTP_PASSWORD."
+        ) from exc
+    except smtplib.SMTPException as exc:
+        raise EmailDeliveryError(f"No se pudo enviar el correo por SMTP: {exc}") from exc
+    except OSError as exc:
+        raise EmailDeliveryError(
+            f"No se pudo conectar al servidor SMTP {settings.SMTP_HOST}:{settings.SMTP_PORT}: {exc}"
+        ) from exc
+
+
 def _format_from_header() -> str:
     if settings.SMTP_FROM_NAME:
         return formataddr((settings.SMTP_FROM_NAME, settings.SMTP_FROM_EMAIL))

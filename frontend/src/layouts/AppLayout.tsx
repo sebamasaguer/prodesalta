@@ -5,6 +5,7 @@ import {
   CalendarDays,
   LogOut,
   Menu,
+  Settings,
   Shield,
   Trophy,
   UserCircle,
@@ -158,6 +159,15 @@ export function AppLayout() {
             </p>
           </div>
         </div>
+
+        <NavLink
+          to="/perfil"
+          onClick={closeMobileMenu}
+          className="mb-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-white/5 px-4 py-3 font-black text-slate-200 hover:bg-white/10 hover:text-white"
+        >
+          <Settings size={18} />
+          Mi perfil
+        </NavLink>
 
         <button
           type="button"

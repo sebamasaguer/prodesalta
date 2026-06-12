@@ -16,6 +16,7 @@ from app.models.prediction import Prediction  # noqa: F401
 from app.models.prode_group import ProdeGroup, GroupMember  # noqa: F401
 from app.models.group_prize import GroupPrize  # noqa: F401
 from app.models.scoring_rule import ScoringRule  # noqa: F401
+from app.models.password_reset import PasswordResetToken  # noqa: F401
 
 
 config = context.config

@@ -44,3 +44,23 @@ export interface AuthResponse {
   token_type: string;
   user: User;
 }
+
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
+export interface ForgotPasswordResponse {
+  message: string;
+  email_delivery_mode: string;
+  dev_reset_url?: string | null;
+}
+
+export interface ResetPasswordPayload {
+  token: string;
+  new_password: string;
+}
+
+export interface ChangePasswordPayload {
+  current_password: string;
+  new_password: string;
+}
